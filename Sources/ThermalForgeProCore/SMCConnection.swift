@@ -115,10 +115,11 @@ public final class SMCConnection {
 
     /// Read raw bytes from an SMC key
     public func readKey(_ key: String) -> (success: Bool, bytes: [UInt8], size: UInt32) {
+        guard let code = fourCharCode(key) else { return (false, [], 0) }
         var input = SMCParamStruct()
         var output = SMCParamStruct()
 
-        input.key = fourCharCode(key)
+        input.key = code
         input.data8 = SMCCommand.readKeyInfo.rawValue
         guard callSMC(&input, &output) == kIOReturnSuccess, output.result == 0 else {
             return (false, [], 0)
@@ -139,11 +140,12 @@ public final class SMCConnection {
 
     /// Write raw bytes to an SMC key
     public func writeKey(_ key: String, bytes: [UInt8]) -> Bool {
+        guard let code = fourCharCode(key) else { return false }
         var input = SMCParamStruct()
         var output = SMCParamStruct()
 
         // Get key info first
-        input.key = fourCharCode(key)
+        input.key = code
         input.data8 = SMCCommand.readKeyInfo.rawValue
         guard callSMC(&input, &output) == kIOReturnSuccess else {
             return false
@@ -190,10 +192,11 @@ public final class SMCConnection {
 
     /// Read key info (data size and type code)
     public func getKeyInfo(_ key: String) -> (size: UInt32, type: String)? {
+        guard let code = fourCharCode(key) else { return nil }
         var input = SMCParamStruct()
         var output = SMCParamStruct()
 
-        input.key = fourCharCode(key)
+        input.key = code
         input.data8 = SMCCommand.readKeyInfo.rawValue
 
         guard callSMC(&input, &output) == kIOReturnSuccess else {
@@ -218,8 +221,8 @@ public final class SMCConnection {
         )
     }
 
-    private func fourCharCode(_ key: String) -> UInt32 {
-        precondition(key.utf8.count == 4, "SMC keys must be exactly 4 characters")
+    private func fourCharCode(_ key: String) -> UInt32? {
+        guard key.utf8.count == 4 else { return nil }
         return key.utf8.reduce(0) { ($0 << 8) | UInt32($1) }
     }
 

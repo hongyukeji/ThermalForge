@@ -746,6 +746,7 @@ public final class DaemonServer {
                     response = .failure(.usage, "usage: set <rpm>")
                     break
                 }
+                try FanControl.validateRPM(Float(rpm))
                 if !allowWrite() { response = rateLimited; break }
                 if blockedByCLIHold() { response = .failure(.heldByCLI, "held by cli"); break }
                 let (clamped, note) = clampRPM(Float(rpm), fan: 0)
@@ -757,6 +758,10 @@ public final class DaemonServer {
                     response = .failure(.usage, "usage: setfan <index> <rpm>")
                     break
                 }
+                // Validate even while thermally suspended, before consuming a token
+                // or recording a hold that would be replayed on cooldown/wake.
+                try fanControl.validateFanIndex(index)
+                try FanControl.validateRPM(Float(rpm))
                 if !allowWrite() { response = rateLimited; break }
                 if blockedByCLIHold() { response = .failure(.heldByCLI, "held by cli"); break }
                 let (clamped, note) = clampRPM(Float(rpm), fan: index)
@@ -792,6 +797,13 @@ public final class DaemonServer {
                 // Reports the build this daemon process is running, so a CLI from a
                 // newer install can detect it's talking to a stale daemon.
                 response = .versionResponse(ThermalForgeProVersion.current)
+            }
+        } catch let error as ThermalForgeProError {
+            switch error {
+            case .invalidFanIndex, .invalidRPM:
+                response = .failure(.usage, "\(error)")
+            default:
+                response = .failure(.internal, "\(error)")
             }
         } catch {
             response = .failure(.internal, "\(error)")

@@ -15,6 +15,8 @@ public enum ThermalForgeProError: Error, CustomStringConvertible {
     case readFailed(String)
     case writeFailed(String)
     case rpmOutOfRange(requested: Float, min: Float, max: Float)
+    case invalidFanIndex(index: Int, count: Int)
+    case invalidRPM(Float)
 
     public var description: String {
         switch self {
@@ -28,6 +30,10 @@ public enum ThermalForgeProError: Error, CustomStringConvertible {
             return "Failed to write SMC key: \(key). Run with sudo."
         case .rpmOutOfRange(let req, let min, let max):
             return "RPM \(Int(req)) is out of range [\(Int(min))–\(Int(max))]"
+        case .invalidFanIndex(let index, let count):
+            return "Invalid fan index \(index); this Mac has \(count) fan(s), numbered from 0"
+        case .invalidRPM(let rpm):
+            return "Invalid RPM \(rpm); expected a finite, nonnegative value within the supported numeric range"
         }
     }
 }
@@ -85,11 +91,15 @@ public final class FanControl {
     /// Whether Ftst unlock is available (M1-M4) or not (M5+)
     private let hasFtst: Bool
 
-    public init() throws {
+    public convenience init() throws {
         guard let connection = SMCConnection() else {
             throw ThermalForgeProError.smcConnectionFailed
         }
-        self.smc = connection
+        self.init(smc: connection)
+    }
+
+    init(smc: SMCConnection) {
+        self.smc = smc
 
         // Detect hardware: which mode key exists?
         // M5 Max uses F%dmd (lowercase), M1-M4 use F%dMd (uppercase)
@@ -120,7 +130,21 @@ public final class FanControl {
 
     // MARK: - Read Fan Info
 
+    func validateFanIndex(_ index: Int) throws {
+        let count = try fanCount()
+        guard index >= 0, index < count else {
+            throw ThermalForgeProError.invalidFanIndex(index: index, count: count)
+        }
+    }
+
+    static func validateRPM(_ rpm: Float) throws {
+        guard rpm >= 0, Int(exactly: rpm.rounded(.towardZero)) != nil else {
+            throw ThermalForgeProError.invalidRPM(rpm)
+        }
+    }
+
     public func fanInfo(_ index: Int) throws -> FanInfo {
+        try validateFanIndex(index)
         let actual = readFanFloat(index, template: SMCFanKey.actual)
         let target = readFanFloat(index, template: SMCFanKey.target)
         let minimum = readFanFloat(index, template: SMCFanKey.minimum)
@@ -194,6 +218,7 @@ public final class FanControl {
 
     /// Set a single fan to a specific RPM
     public func setSpeed(fan index: Int, rpm: Float) throws {
+        try Self.validateRPM(rpm)
         let info = try fanInfo(index)
 
         // Safety: never below minimum
@@ -223,6 +248,7 @@ public final class FanControl {
 
     /// Set all fans to a specific RPM
     public func setAllFans(rpm: Float) throws {
+        try Self.validateRPM(rpm)
         let count = try fanCount()
 
         // Validate against first fan's limits

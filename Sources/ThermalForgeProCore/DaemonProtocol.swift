@@ -155,9 +155,9 @@ public struct DaemonRequest: Codable, Equatable {
         case .setMax:
             self.init(verb: .max, oneshot: os)
         case .setRPM(let rpm):
-            self.init(verb: .set, rpm: Int(rpm), oneshot: os)
+            self.init(verb: .set, rpm: Int(exactly: rpm.rounded(.towardZero)), oneshot: os)
         case .setFan(let index, let rpm):
-            self.init(verb: .setfan, rpm: Int(rpm), fan: index, oneshot: os)
+            self.init(verb: .setfan, rpm: Int(exactly: rpm.rounded(.towardZero)), fan: index, oneshot: os)
         case .resetAuto:
             self.init(verb: .auto)
         }
