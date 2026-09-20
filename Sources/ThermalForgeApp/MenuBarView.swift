@@ -132,6 +132,7 @@ struct MenuBarView: View {
             .pickerStyle(.inline)
             .labelsHidden()
             .padding(.horizontal, 12)
+            .padding(.bottom, 1)
 
             Divider().padding(.vertical, 4)
 
