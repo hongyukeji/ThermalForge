@@ -257,6 +257,10 @@ public final class FanControl {
         try FanHandoff.release(
             indices: Array(0..<count), hasFtst: hasFtst,
             modeKey: { SMCFanKey.key(self.modeKeyTemplate, fan: $0) },
+            read: {
+                let result = self.smc.readKey($0)
+                return result.success ? result.bytes.first : nil
+            },
             write: { self.smc.writeKey($0, bytes: $1) }
         )
         log("Reset to Apple defaults")
