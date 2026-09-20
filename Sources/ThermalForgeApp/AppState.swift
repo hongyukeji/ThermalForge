@@ -84,7 +84,9 @@ final class AppState: ObservableObject {
         }
     }()
 
-    init() {
+    init(startServices: Bool = true) {
+        // Offscreen presentation tests must never start monitors or contact SMC.
+        guard startServices else { return }
         // launchAtLogin is initialized from SMAppService status as its property default
         // (above), NOT reassigned here — reassigning would fire didSet and re-register on
         // every launch. Reflecting state is a read; only a user toggle should register.

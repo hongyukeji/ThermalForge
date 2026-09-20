@@ -12,12 +12,14 @@ import AppKit
 import Combine
 import SwiftUI
 import ThermalForgeCore
+import ThermalForgeLocalization
 
 // MARK: - Status Bar Controller
 
 @MainActor
 final class StatusBarController: NSObject, NSPopoverDelegate {
     private let appState: AppState
+    private let language = AppLanguageStore()
     private let statusItem: NSStatusItem
     private let popover = NSPopover()
     private var cancellables = Set<AnyCancellable>()
@@ -31,6 +33,7 @@ final class StatusBarController: NSObject, NSPopoverDelegate {
         let symbol: String
         let needsDot: Bool
         let field: String?
+        let language: AppLanguage
     }
 
     init(appState: AppState) {
@@ -42,7 +45,7 @@ final class StatusBarController: NSObject, NSPopoverDelegate {
         popover.animates = false
         popover.delegate = self
         popover.contentViewController = NSHostingController(
-            rootView: MenuBarView().environmentObject(appState)
+            rootView: MenuBarView().environmentObject(appState).environmentObject(language)
         )
 
         if let button = statusItem.button {
@@ -57,6 +60,12 @@ final class StatusBarController: NSObject, NSPopoverDelegate {
     }
 
     private func observe() {
+        language.$language
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                MainActor.assumeIsolated { self?.updateStatusButton() }
+            }
+            .store(in: &cancellables)
         Publishers.CombineLatest4(
             appState.$monitorState,
             appState.$maxTemp,
@@ -77,7 +86,8 @@ final class StatusBarController: NSObject, NSPopoverDelegate {
         let next = RenderedStatusItem(
             symbol: symbolName,
             needsDot: appState.daemonVersionMismatch != nil,
-            field: temperatureField()
+            field: temperatureField(),
+            language: language.language
         )
         guard next != rendered else { return }
         rendered = next
@@ -88,9 +98,10 @@ final class StatusBarController: NSObject, NSPopoverDelegate {
             field: next.field
         )
         let unit = appState.useFahrenheit ? "°F" : "°C"
-        let reading = next.field.map { $0.trimmingCharacters(in: .whitespaces) + unit } ?? "Temperature unavailable"
+        let reading = next.field.map { $0.trimmingCharacters(in: .whitespaces) + unit } ?? language.text("Temperature unavailable")
+        button.setAccessibilityLabel(language.text("ThermalForge"))
         button.setAccessibilityValue(reading)
-        button.toolTip = "ThermalForge: " + reading
+        button.toolTip = language.text("ThermalForge: {reading}", ["reading": reading])
         button.imagePosition = .imageOnly
         button.attributedTitle = NSAttributedString(string: "")
     }
