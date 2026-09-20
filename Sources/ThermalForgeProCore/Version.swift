@@ -10,7 +10,7 @@
 
 public enum ThermalForgeProVersion {
     // First independent ThermalForgePro release.
-    public static let current = "0.3.0"
+    public static let current = "0.3.1"
 
     /// Daemons at or above this version understand the fan-command protocol
     /// additions from 0.1.5: the `oneshot` token (unsupervised holds that don't

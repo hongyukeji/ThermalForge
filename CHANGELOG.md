@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.1
+
+- Automatically resize the native menu window to its measured content height.
+  Removing a temporary banner now shrinks the window again, fixing excess
+  background space and square content edges inside the retained larger window.
+- Preserve the native window appearance, top anchor, existing row spacing and
+  all fan-control behavior. Add a window growth/shrinkage regression test.
+
 ## 0.3.0
 
 First independent ThermalForgePro release, derived from the locally validated
