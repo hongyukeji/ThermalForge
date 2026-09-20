@@ -254,19 +254,11 @@ public final class FanControl {
     /// Reset all fans to Apple defaults (auto mode, thermalmonitord resumes)
     public func resetAuto() throws {
         let count = try fanCount()
-
-        for i in 0..<count {
-            let modeKey = SMCFanKey.key(modeKeyTemplate, fan: i)
-            _ = smc.writeKey(modeKey, bytes: [0])
-
-            let targetKey = SMCFanKey.key(SMCFanKey.target, fan: i)
-            _ = smc.writeKey(targetKey, bytes: floatToSMCBytes(0))
-        }
-
-        // Reset Ftst if it exists — thermalmonitord reclaims control
-        if hasFtst {
-            _ = smc.writeKey(SMCFanKey.forceTest, bytes: [0])
-        }
+        try FanHandoff.release(
+            indices: Array(0..<count), hasFtst: hasFtst,
+            modeKey: { SMCFanKey.key(self.modeKeyTemplate, fan: $0) },
+            write: { self.smc.writeKey($0, bytes: $1) }
+        )
         log("Reset to Apple defaults")
     }
 

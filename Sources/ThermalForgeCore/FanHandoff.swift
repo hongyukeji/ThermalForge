@@ -8,6 +8,24 @@ enum FanHandoff {
     // fan 0 at 10s despite the original two-fan path allowing ~20s overall.
     static let acquisitionSeconds: TimeInterval = 20
 
+    /// Attempt every fan even if one mode write fails. Target RPM is advisory
+    /// once automatic mode is restored; mode and Ftst writes are required.
+    static func release(
+        indices: [Int], hasFtst: Bool, modeKey: (Int) -> String,
+        write: (String, [UInt8]) -> Bool
+    ) throws {
+        var failedKey: String?
+        for index in indices {
+            let key = modeKey(index)
+            if !write(key, [0]) { failedKey = failedKey ?? key }
+            _ = write(SMCFanKey.key(SMCFanKey.target, fan: index), floatToSMCBytes(0))
+        }
+        if hasFtst, !write(SMCFanKey.forceTest, [0]) {
+            failedKey = failedKey ?? SMCFanKey.forceTest
+        }
+        if let key = failedKey { throw ThermalForgeError.writeFailed(key) }
+    }
+
     static func acquire(
         indices: [Int], hasFtst: Bool, modeKey: (Int) -> String,
         readMode: (Int) -> UInt8?, write: (String, [UInt8]) -> Bool,
