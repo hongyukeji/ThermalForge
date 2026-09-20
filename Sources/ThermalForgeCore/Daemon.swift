@@ -636,15 +636,23 @@ public final class DaemonServer {
     }
 
     private func handleWake() {
+        stateLock.lock()
+        let heldCommand = hold.command
+        stateLock.unlock()
+        guard let command = heldCommand else {
+            NSLog("ThermalForge daemon: woke — no profile to re-apply")
+            return
+        }
+
+        NSLog("ThermalForge daemon: woke — re-applying: %@", command)
+
         // Delay slightly — SMC needs a moment after wake
         DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + 2.0) { [self] in
+            smcLock.lock()
+            defer { smcLock.unlock() }
             do {
-                let command = try WakeRecovery.reapply(lock: smcLock, snapshot: {
-                    self.stateLock.lock()
-                    defer { self.stateLock.unlock() }
-                    return self.hold.snapshot(safetySuspended: self.safetySuspended)
-                }, apply: applyCommandString)
-                NSLog("ThermalForge daemon: wake recovery: %@", command ?? "no active hold")
+                try applyCommandString(command)
+                NSLog("ThermalForge daemon: re-applied after wake")
             } catch {
                 NSLog("ThermalForge daemon: wake re-apply failed: %@", "\(error)")
             }

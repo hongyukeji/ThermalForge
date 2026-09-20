@@ -77,10 +77,6 @@ public final class SMCConnection {
 
     private let connection: io_connect_t
     private let injectedCall: ((inout SMCParamStruct, inout SMCParamStruct) -> kern_return_t)?
-    private let cacheLock = NSLock()
-    /// Sizes are firmware metadata, not temperature values. Cache only valid
-    /// successful lookups; absent/failed keys are retried on the next sweep.
-    private var keySizeCache: [UInt32: UInt32] = [:]
 
     init(call: @escaping (inout SMCParamStruct, inout SMCParamStruct) -> kern_return_t) {
         connection = 0
@@ -122,14 +118,18 @@ public final class SMCConnection {
         var input = SMCParamStruct()
         var output = SMCParamStruct()
 
-        let code = fourCharCode(key)
-        input.key = code
-        guard let dataSize = readSize(code) else { return (false, [], 0) }
+        input.key = fourCharCode(key)
+        input.data8 = SMCCommand.readKeyInfo.rawValue
+        guard callSMC(&input, &output) == kIOReturnSuccess, output.result == 0 else {
+            return (false, [], 0)
+        }
+        let dataSize = output.keyInfo.dataSize
+        guard dataSize > 0, dataSize <= 32 else { return (false, [], 0) }
 
         // Read value
         input.keyInfo.dataSize = dataSize
         input.data8 = SMCCommand.readBytes.rawValue
-        guard callSMC(&input, &output) == kIOReturnSuccess else {
+        guard callSMC(&input, &output) == kIOReturnSuccess, output.result == 0 else {
             return (false, [], 0)
         }
 
@@ -204,23 +204,6 @@ public final class SMCConnection {
     }
 
     // MARK: - Private
-
-    private func readSize(_ key: UInt32) -> UInt32? {
-        cacheLock.lock()
-        defer { cacheLock.unlock() }
-        if let size = keySizeCache[key] { return size }
-        var input = SMCParamStruct()
-        var output = SMCParamStruct()
-        input.key = key
-        input.data8 = SMCCommand.readKeyInfo.rawValue
-        guard callSMC(&input, &output) == kIOReturnSuccess else { return nil }
-        let size = output.keyInfo.dataSize
-        guard size > 0 else { return nil }
-        // Preserve existing reads on unusual firmware responses, but never
-        // retain rejected or out-of-buffer metadata as a cache hit.
-        if output.result == 0 && size <= 32 { keySizeCache[key] = size }
-        return size
-    }
 
     private func callSMC(_ input: inout SMCParamStruct, _ output: inout SMCParamStruct) -> kern_return_t {
         if let injectedCall { return injectedCall(&input, &output) }

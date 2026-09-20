@@ -26,8 +26,8 @@ public final class TFLogger {
         return logDir.appendingPathComponent("thermalforge-\(dateStr).log")
     }
 
-    init(directory: URL? = nil) {
-        logDir = directory ?? FileManager.default.homeDirectoryForCurrentUser
+    private init() {
+        logDir = FileManager.default.homeDirectoryForCurrentUser
             .appendingPathComponent("Library/Logs/ThermalForge")
 
         dateFormatter = DateFormatter()
