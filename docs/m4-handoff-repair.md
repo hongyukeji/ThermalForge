@@ -1,8 +1,8 @@
 # M4 fan handoff and daemon transport repair
 
-Fork build: **0.2.3.2**. This is not an upstream release.
+Historical hardware-tested fork build: **0.2.3.2** (`97a8a83`). This is not an upstream release. Later source changes are documented separately in [the maintenance notes](upstream-followups-20260921.md).
 
-The repair was developed against upstream v0.2.3 (`3fbaa527aee05a5a0ed2606f00b50254df9d614f`) and ported onto this fork's `8a344f6` baseline. The intervening commits only changed the idle-CPU investigation document; those changes are preserved. Core source and regression tests are identical to the locally tested repair.
+The repair was developed against upstream v0.2.3 (`3fbaa527aee05a5a0ed2606f00b50254df9d614f`) and ported onto this fork's `8a344f6` baseline. The intervening commits only changed the idle-CPU investigation document; those changes are preserved. At that commit, core source and regression tests are identical to the locally tested repair.
 
 ## Failure
 

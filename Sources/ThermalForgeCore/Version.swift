@@ -9,8 +9,8 @@
 //
 
 public enum ThermalForgeVersion {
-    // Local M4 handoff/transport repair, not an upstream release.
-    public static let current = "0.2.3.2"
+    // Local maintenance build, not an upstream release.
+    public static let current = "0.2.3.4"
 
     /// Daemons at or above this version understand the fan-command protocol
     /// additions from 0.1.5: the `oneshot` token (unsupervised holds that don't

@@ -11,11 +11,11 @@ Built in 2026 with Swift. No subscriptions, no telemetry, no ads.
 
 ---
 
-## Fork repair: slow M4 fan handoff
+## Fork maintenance build
 
-This fork includes **0.2.3.2**, a local repair based on upstream v0.2.3, not an upstream release. It fixes communication timeouts during slow manual fan acquisition, keeps heartbeat/state/version requests responsive, and avoids repeating the unlock sequence when fans are already under manual control. Thermal curves and safety thresholds are unchanged.
+This fork builds **0.2.3.4**, based on upstream v0.2.3, not an upstream release. It retains the M4 slow-handoff communication repair and adds checked fan handback, current-hold wake recovery, isolated persistence tests, SMC metadata caching, and a stable accessible menu bar. Built-in curve parameters, sensor selection, 100ms sampling, and the 95°C safety threshold are unchanged. Smart cooldown now follows its documented stop/minimum behavior even with stale rate history or calibration data.
 
-See [the repair notes and validation boundaries](docs/m4-handoff-repair.md) for regression tests, two M4 Max hardware runs, and build instructions. The upstream Homebrew/source installation instructions below do **not** install this fork's repair.
+See [the maintenance notes](docs/upstream-followups-20260921.md) for scope and current validation. [The original repair notes](docs/m4-handoff-repair.md) record two hardware runs of **0.2.3.2**, not hardware acceptance of this newer build. The upstream Homebrew/source installation instructions below do **not** install this fork's repair.
 
 ## Why ThermalForge?
 
