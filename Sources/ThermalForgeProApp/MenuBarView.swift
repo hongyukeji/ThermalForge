@@ -202,12 +202,6 @@ struct MenuBarView: View {
         .frame(width: 260)
         // Measure the content's ideal height, including any temporary banners.
         .fixedSize(horizontal: false, vertical: true)
-        .background {
-            GeometryReader { geometry in
-                MenuWindowSizing(contentSize: geometry.size)
-                    .allowsHitTesting(false)
-            }
-        }
     }
 
     // MARK: - Helpers

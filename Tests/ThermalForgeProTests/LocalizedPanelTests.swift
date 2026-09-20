@@ -24,7 +24,8 @@ struct LocalizedPanelTests {
         let identity = ObjectIdentifier(state)
         let panel = NSHostingView(rootView: MenuBarView().environmentObject(state).environmentObject(language)
             .background(Color(nsColor: .windowBackgroundColor)).environment(\.colorScheme, .light))
-        for scenario in ["normal", "held-update", "mismatch-safety", "daemon-down"] {
+        var normalHeights: [AppLanguage: CGFloat] = [:]
+        for scenario in ["normal", "held-update", "mismatch-safety", "daemon-down", "normal"] {
             state.externalHold = scenario == "held-update" ? DaemonHoldState(command: "setfan 1 5777", owner: "cli") : nil
             state.availableUpdate = scenario == "held-update" ? AvailableUpdate(version: "99.99.99", url: "https://github.com/hongyukeji/ThermalForgePro/releases") : nil
             state.daemonVersionMismatch = scenario == "mismatch-safety" ? "0.2.3.5" : nil
@@ -39,6 +40,13 @@ struct LocalizedPanelTests {
                 panel.layoutSubtreeIfNeeded()
                 #expect(panel.frame.width == 260)
                 #expect(panel.frame.height > 300 && panel.frame.height < 1000)
+                if scenario == "normal" {
+                    if let firstHeight = normalHeights[choice] {
+                        #expect(panel.frame.height == firstHeight)
+                    } else {
+                        normalHeights[choice] = panel.frame.height
+                    }
+                }
                 #expect(ObjectIdentifier(state) == identity)
                 #expect(state.activeProfile == .smart)
                 #expect(state.monitorState == monitor)

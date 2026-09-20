@@ -59,6 +59,7 @@ struct ThermalForgeProApp: App {
             .environmentObject(language)
         }
         .menuBarExtraStyle(.window)
+        .windowResizability(.contentSize)
     }
 }
 

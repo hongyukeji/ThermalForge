@@ -6,7 +6,8 @@
   Removing a temporary banner now shrinks the window again, fixing excess
   background space and square content edges inside the retained larger window.
 - Preserve the native window appearance, top anchor, existing row spacing and
-  all fan-control behavior. Add a window growth/shrinkage regression test.
+  all fan-control behavior. Use SwiftUI's content-size window policy and ideal
+  content height; no fixed panel height or custom window renderer is needed.
 
 ## 0.3.0
 
