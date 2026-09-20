@@ -149,9 +149,8 @@ enum StatusItemRenderer {
         weight: .regular
     )
     private static let dotDiameter: CGFloat = 5
-    // Pulls the field into the glyph's right side bearing, leaving a
-    // hair of ink clearance between them.
-    private static let glyphFieldGap: CGFloat = -1
+    // Keep three-digit readings clear of the glyph as well as two-digit ones.
+    private static let glyphFieldGap: CGFloat = 3
 
     static func make(symbol: String, needsDot: Bool, field: String?) -> NSImage {
         let base = NSImage(systemSymbolName: symbol, accessibilityDescription: "ThermalForge")
@@ -165,15 +164,16 @@ enum StatusItemRenderer {
         )
         let image = NSImage(size: canvas, flipped: false) { _ in
             let tint: NSColor = needsDot ? .labelColor : .black
-            let glyph = base.withSymbolConfiguration(
-                NSImage.SymbolConfiguration(paletteColors: [tint])
-            ) ?? base
-            glyph.draw(in: NSRect(
+            let glyph = base.withSymbolConfiguration(.preferringMonochrome()) ?? base
+            let iconRect = NSRect(
                 x: 0,
                 y: (canvas.height - iconSize.height) / 2,
                 width: iconSize.width,
                 height: iconSize.height
-            ))
+            )
+            glyph.draw(in: iconRect)
+            tint.setFill()
+            iconRect.fill(using: .sourceAtop)
             // Digits sit on cap height centered at the canvas center, so
             // their vertical center matches the glyph's.
             let baseline = canvas.height / 2 - menuFont.capHeight / 2
