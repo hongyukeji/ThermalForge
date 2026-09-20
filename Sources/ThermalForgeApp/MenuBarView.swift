@@ -89,45 +89,43 @@ struct MenuBarView: View {
 
             Divider().padding(.vertical, 4)
 
-            // Profile picker
+            // Explicit actions: a view refresh must never select a profile.
             SectionHeader(title: "PROFILE")
-            Picker("Profile", selection: Binding(
-                get: { appState.activeProfile.id },
-                set: { id in
-                    if let profile = FanProfile.builtIn.first(where: { $0.id == id }) {
-                        appState.selectProfile(profile)
-                    }
-                }
-            )) {
+            VStack(spacing: 6) {
                 ForEach(FanProfile.builtIn) { profile in
-                    HStack {
-                        Text(profile.name)
-                        Spacer()
-                        if !profile.curve.handsOff {
-                            let unit = appState.useFahrenheit ? "F" : "C"
-                            if profile.curve.instantEngage {
-                                // Max: show instant trigger temp
-                                let startC = profile.curve.startTemp
-                                let startDisp = appState.useFahrenheit ? startC * 9 / 5 + 32 : startC
-                                Text("\(Int(startDisp))°\(unit) instant")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            } else {
-                                let startC = profile.curve.startTemp
-                                let ceilC = profile.curve.ceilingTemp
-                                let startDisp = appState.useFahrenheit ? startC * 9 / 5 + 32 : startC
-                                let ceilDisp = appState.useFahrenheit ? ceilC * 9 / 5 + 32 : ceilC
-                                Text("\(Int(startDisp))→\(Int(ceilDisp))°\(unit)")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
+                    Button { appState.selectProfile(profile) } label: {
+                        HStack {
+                            Image(systemName: "checkmark")
+                                .frame(width: 12)
+                                .opacity(appState.activeProfile.id == profile.id ? 1 : 0)
+                            Text(profile.name)
+                            Spacer()
+                            if !profile.curve.handsOff {
+                                let unit = appState.useFahrenheit ? "F" : "C"
+                                if profile.curve.instantEngage {
+                                    // Max: show instant trigger temp
+                                    let startC = profile.curve.startTemp
+                                    let startDisp = appState.useFahrenheit ? startC * 9 / 5 + 32 : startC
+                                    Text("\(Int(startDisp))°\(unit) instant")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                } else {
+                                    let startC = profile.curve.startTemp
+                                    let ceilC = profile.curve.ceilingTemp
+                                    let startDisp = appState.useFahrenheit ? startC * 9 / 5 + 32 : startC
+                                    let ceilDisp = appState.useFahrenheit ? ceilC * 9 / 5 + 32 : ceilC
+                                    Text("\(Int(startDisp))→\(Int(ceilDisp))°\(unit)")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
                             }
                         }
+                        .contentShape(Rectangle())
                     }
-                    .tag(profile.id)
+                    .buttonStyle(.plain)
+                    .accessibilityAddTraits(appState.activeProfile.id == profile.id ? .isSelected : [])
                 }
             }
-            .pickerStyle(.inline)
-            .labelsHidden()
             .padding(.horizontal, 12)
 
             Divider().padding(.vertical, 4)

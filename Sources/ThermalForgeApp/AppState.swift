@@ -387,6 +387,7 @@ final class AppState: ObservableObject {
     }
 
     func setSmart() {
+        guard activeProfile.id != FanProfile.smart.id || externalHold != nil else { return }
         let took = seizeControl()
         activeProfile = .smart
         persistSelectedProfile(FanProfile.smart.id)
@@ -426,6 +427,13 @@ final class AppState: ObservableObject {
     }
 
     func selectProfile(_ profile: FanProfile) {
+        // Only acknowledge Silent once the daemon confirms the handback, just
+        // like the Default button. Re-clicking it is an explicit reset request.
+        if profile.curve.handsOff {
+            resetAuto()
+            return
+        }
+        guard profile.id != activeProfile.id || externalHold != nil else { return }
         let took = seizeControl()
         activeProfile = profile
         persistSelectedProfile(profile.id)
