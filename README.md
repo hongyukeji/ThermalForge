@@ -13,9 +13,9 @@ Built in 2026 with Swift. No subscriptions, no telemetry, no ads.
 
 ## Fork maintenance build
 
-This fork builds **0.2.3.5**, based on upstream v0.2.3, not an upstream release. It retains the M4 slow-handoff communication repair and adds checked fan handback, current-hold wake recovery, isolated persistence tests, SMC metadata caching, and a stable accessible menu bar. Built-in curve parameters, sensor selection, 100ms sampling, and the 95°C safety threshold are unchanged. Smart cooldown now follows its documented stop/minimum behavior even with stale rate history or calibration data. The AppKit launch lifecycle also avoids opening an empty settings window.
+This fork builds **0.2.3.6**, following official main (`8a344f6`). It keeps the hardware-verified M4 slow-handoff repair, checked fan handback, isolated persistence tests, and GUI support for English, Simplified Chinese and Traditional Chinese. The menu bar, app lifecycle, profile Picker, Smart algorithm, wake recovery, sensors, 100ms sampling and 95°C threshold follow upstream. Menu width changes naturally with temperature digits.
 
-See [the maintenance notes](docs/upstream-followups-20260921.md) for scope and current validation. [The original repair notes](docs/m4-handoff-repair.md) record two hardware runs of **0.2.3.2**, not hardware acceptance of this newer build. The upstream Homebrew/source installation instructions below do **not** install this fork's repair.
+See [the maintenance audit](docs/upstream-followups-20260921.md) for retained and removed changes, evidence and validation. [Localization maintenance](docs/gui-localization.md) explains translation and packaging. [The original repair notes](docs/m4-handoff-repair.md) contain historical 0.2.3.2 measurements. The upstream Homebrew/source installation instructions below do **not** install this fork's changes.
 
 ## Why ThermalForge?
 
