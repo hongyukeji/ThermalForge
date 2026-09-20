@@ -5,7 +5,7 @@
 //  Menu bar app for fan control on Apple Silicon MacBooks.
 //
 
-import SwiftUI
+import AppKit
 import ThermalForgeCore
 
 @MainActor
@@ -46,11 +46,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 }
 
 @main
-struct ThermalForgeApp: App {
-    @NSApplicationDelegateAdaptor(AppDelegate.self) var delegate
-
-    var body: some Scene {
-        // The retained AppKit status item owns the popover and stable label.
-        Settings { EmptyView() }
+struct ThermalForgeApp {
+    @MainActor
+    static func main() {
+        let app = NSApplication.shared
+        let delegate = AppDelegate()
+        app.delegate = delegate
+        // The status item hosts SwiftUI itself. A placeholder Settings scene
+        // would open an empty window when Launch Services starts the app.
+        withExtendedLifetime(delegate) {
+            app.run()
+        }
     }
 }
