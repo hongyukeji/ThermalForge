@@ -181,7 +181,10 @@ public final class DaemonClient {
         guard fd >= 0 else { throw DaemonError.connectionFailed }
         defer { close(fd) }
         var noSignal: Int32 = 1
-        setsockopt(fd, SOL_SOCKET, SO_NOSIGPIPE, &noSignal, socklen_t(MemoryLayout<Int32>.size))
+        guard setsockopt(fd, SOL_SOCKET, SO_NOSIGPIPE, &noSignal,
+                         socklen_t(MemoryLayout<Int32>.size)) == 0 else {
+            throw DaemonError.connectionFailed
+        }
 
         // Bound every send/recv so a hung or contended daemon can never block the
         // caller indefinitely — the v0.1.7 freeze. Healthy round-trips here are

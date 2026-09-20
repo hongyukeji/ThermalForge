@@ -81,7 +81,14 @@ final class ConnectionServer: @unchecked Sendable {
     private func handleConnection(_ fd: Int32) {
         // A timed-out client must not terminate the root daemon with SIGPIPE.
         var noSignal: Int32 = 1
-        setsockopt(fd, SOL_SOCKET, SO_NOSIGPIPE, &noSignal, socklen_t(MemoryLayout<Int32>.size))
+        // macOS may reject this option when the peer has already disconnected.
+        // Never hand an unprotected descriptor to the asynchronous writer.
+        guard setsockopt(fd, SOL_SOCKET, SO_NOSIGPIPE, &noSignal,
+                         socklen_t(MemoryLayout<Int32>.size)) == 0 else {
+            close(fd)
+            connectionFinished()
+            return
+        }
         _ = fcntl(fd, F_SETFL, fcntl(fd, F_GETFL, 0) | O_NONBLOCK)
         let q = DispatchQueue(label: "io.github.hongyukeji.thermalforgepro.conn")
         let io = DispatchIO(type: .stream, fileDescriptor: fd, queue: q) { [self] _ in

@@ -22,8 +22,9 @@ jobs:
         run: bash Scripts/package-release.sh
       - name: Check packaged resources
         run: bash Scripts/check-localization-package.sh .build/release
-      - name: Publish
+      - name: Create draft release
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ github.ref_name }}
-        run: gh release create "$RELEASE_TAG" dist/*.tar.gz dist/SHA256SUMS --verify-tag --title "ThermalForgePro $RELEASE_TAG" --notes-file CHANGELOG.md
+        # Publish only after the downloaded artifact has passed local acceptance.
+        run: gh release create "$RELEASE_TAG" dist/*.tar.gz dist/SHA256SUMS --verify-tag --draft --title "ThermalForgePro $RELEASE_TAG" --notes-file CHANGELOG.md

@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.3.3
+
+- Drop disconnected clients if macOS cannot enable `SO_NOSIGPIPE`, before starting
+  an asynchronous reply. This prevents an abandoned request from terminating the
+  daemon and releases the connection slot immediately.
+- Add a standalone process regression with the default SIGPIPE disposition. It
+  exercises clients that disconnect before acceptance and while replies are being
+  prepared, then verifies that subsequent requests still succeed.
+- Include the invalid-input protection from 0.3.2 and the automatic menu height
+  correction from 0.3.1, with unchanged fan curves and Chinese wording.
+
+Versions 0.3.0–0.3.2 are withdrawn. Upgrade to 0.3.3 and run
+`sudo thermalforgepro install` to synchronize the app and privileged daemon.
+
 ## 0.3.2
 
 - Reject nonexistent fan indices before hardware access or hold changes. A command
@@ -11,9 +25,8 @@
   spacing, fan curves and safety behavior.
 - Run both Debug and Release regression tests before publishing releases.
 
-Versions 0.3.0 and 0.3.1 are withdrawn because they accept invalid fan indices that
-can crash the daemon. Upgrade to 0.3.2 and synchronize the installed service with
-`sudo thermalforgepro install`.
+This candidate fixed invalid fan indices, but was superseded by 0.3.3 after live
+testing found the disconnected-client failure described above.
 
 ## 0.3.1
 
