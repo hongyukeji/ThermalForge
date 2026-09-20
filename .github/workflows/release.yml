@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Test
-        run: swift test
+        run: bash Scripts/test.sh
       - name: Build distribution
         env:
           RELEASE_TAG: ${{ github.ref_name }}

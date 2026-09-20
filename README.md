@@ -85,4 +85,4 @@ cd ThermalForgePro
 
 也可在 [Releases](https://github.com/hongyukeji/ThermalForgePro/releases/latest) 下载完整应用与 CLI。解压后执行 `sudo ./bin/thermalforgepro install`，迁移旧版时加上 `--migrate-thermalforge`。
 
-开发验证：`swift test`、`swift build -c release`、`bash Scripts/check-localization-package.sh`。语言资源维护见 [GUI localization](docs/gui-localization.md)。`docs/upstream/` 与早期验收文档保留历史记录，不代表当前发行版或所有机型的测试结论。
+开发验证：`bash Scripts/test.sh`、`swift build -c release`、`bash Scripts/check-localization-package.sh`。语言资源维护见 [GUI localization](docs/gui-localization.md)。`docs/upstream/` 与早期验收文档保留历史记录，不代表当前发行版或所有机型的测试结论。

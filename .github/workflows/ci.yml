@@ -16,7 +16,7 @@ jobs:
         run: swift build
 
       - name: Test
-        run: swift test
+        run: bash Scripts/test.sh
 
       - name: Check localization packaging
         run: bash Scripts/check-localization-package.sh
