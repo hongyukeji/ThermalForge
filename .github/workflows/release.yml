@@ -12,8 +12,10 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
-      - name: Test
+      - name: Test Debug
         run: bash Scripts/test.sh
+      - name: Test Release
+        run: bash Scripts/test.sh -c release
       - name: Build distribution
         env:
           RELEASE_TAG: ${{ github.ref_name }}
