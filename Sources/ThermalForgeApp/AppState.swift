@@ -47,6 +47,7 @@ final class AppState: ObservableObject {
     /// dismissed version is suppressed until a newer one ships.
     @Published var availableUpdate: AvailableUpdate?
 
+    private let servicesEnabled: Bool
     private var monitor: ThermalMonitor?
     private let executor = PrivilegedExecutor()
     private var heartbeatTimer: DispatchSourceTimer?
@@ -85,6 +86,7 @@ final class AppState: ObservableObject {
     }()
 
     init(startServices: Bool = true) {
+        servicesEnabled = startServices
         // Offscreen presentation tests must never start monitors or contact SMC.
         guard startServices else { return }
         // launchAtLogin is initialized from SMAppService status as its property default
@@ -389,7 +391,7 @@ final class AppState: ObservableObject {
     }
 
     func setSmart() {
-        guard activeProfile.id != FanProfile.smart.id || externalHold != nil else { return }
+        guard servicesEnabled else { return }
         let took = seizeControl()
         activeProfile = .smart
         persistSelectedProfile(FanProfile.smart.id)
@@ -402,6 +404,7 @@ final class AppState: ObservableObject {
     }
 
     func resetAuto() {
+        guard servicesEnabled else { return }
         seizeControl()
         // resetAuto clears any hold (CLI or app) → daemon .none. This is the
         // no-CLI-knowledge way out of a pinned CLI hold: the Default button, and
@@ -429,13 +432,7 @@ final class AppState: ObservableObject {
     }
 
     func selectProfile(_ profile: FanProfile) {
-        // Only acknowledge Silent once the daemon confirms the handback, just
-        // like the Default button. Re-clicking it is an explicit reset request.
-        if profile.curve.handsOff {
-            resetAuto()
-            return
-        }
-        guard profile.id != activeProfile.id || externalHold != nil else { return }
+        guard servicesEnabled else { return }
         let took = seizeControl()
         activeProfile = profile
         persistSelectedProfile(profile.id)

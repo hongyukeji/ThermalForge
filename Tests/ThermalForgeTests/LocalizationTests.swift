@@ -19,8 +19,13 @@ struct LocalizationTests {
             }
         }
         #expect(english.allSatisfy { $0.key == $0.value })
-        #expect(catalog.text("Performance", language: .traditionalChinese) == "效能")
-        #expect(catalog.text("Reading sensors...", language: .traditionalChinese) == "正在讀取感測器…")
+        #expect(catalog.text("Performance", language: .traditionalChinese) == "性能")
+        #expect(catalog.text("Reading sensors...", language: .traditionalChinese) == "正在讀取傳感器…")
+        let simplified = try #require(catalog.translations[.simplifiedChinese])
+        for (key, value) in simplified {
+            #expect(catalog.translations[.traditionalChinese]?[key]
+                    == value.applyingTransform(StringTransform("Simplified-Traditional"), reverse: false))
+        }
     }
 
     @Test("Missing, empty and broken translations fall back to English")
@@ -39,7 +44,7 @@ struct LocalizationTests {
     func formatting() {
         let catalog = LocalizationCatalog.bundled
         #expect(catalog.text("{temperature}°{unit} instant", language: .traditionalChinese,
-                             arguments: ["temperature": "149", "unit": "F"]) == "149°F 立即觸發")
+                             arguments: ["temperature": "149", "unit": "F"]) == "149°F 即時觸發")
         #expect(catalog.text("ThermalForge {version} is available. You have {appVersion}.",
                              language: .english, arguments: ["version": "{appVersion}", "appVersion": "0.2.3.6"])
                 == "ThermalForge {appVersion} is available. You have 0.2.3.6.")

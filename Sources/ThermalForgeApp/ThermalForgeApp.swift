@@ -5,14 +5,11 @@
 //  Menu bar app for fan control on Apple Silicon MacBooks.
 //
 
-import AppKit
+import SwiftUI
 import ThermalForgeCore
+import ThermalForgeLocalization
 
-@MainActor
-final class AppDelegate: NSObject, NSApplicationDelegate {
-    private lazy var appState = AppState()
-    private var statusController: StatusBarController?
-
+class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         // No Dock icon — menu bar only
         NSApp.setActivationPolicy(.accessory)
@@ -23,14 +20,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         if running.count > 1 {
             TFLogger.shared.error("Another instance already running — quitting")
             NSApp.terminate(nil)
-            return
         }
-        statusController = StatusBarController(appState: appState)
     }
 
     func applicationWillTerminate(_ notification: Notification) {
-        // A rejected duplicate never started this controller and owns no hold.
-        guard statusController != nil else { return }
         // Reset fans on quit so the daemon doesn't hold stale APP settings — but
         // ONLY if the app owns the hold. A CLI hold (`sudo thermalforge max`) is the
         // user's deliberate, unsupervised choice; quitting the menu bar app must not
@@ -46,16 +39,74 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 }
 
 @main
-struct ThermalForgeApp {
-    @MainActor
-    static func main() {
-        let app = NSApplication.shared
-        let delegate = AppDelegate()
-        app.delegate = delegate
-        // The status item hosts SwiftUI itself. A placeholder Settings scene
-        // would open an empty window when Launch Services starts the app.
-        withExtendedLifetime(delegate) {
-            app.run()
+struct ThermalForgeApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @StateObject private var appState = AppState()
+    @StateObject private var language = AppLanguageStore()
+
+    var body: some Scene {
+        MenuBarExtra {
+            MenuBarView()
+                .environmentObject(appState)
+                .environmentObject(language)
+        } label: {
+            MenuBarLabel(
+                state: appState.monitorState,
+                maxTemp: appState.maxTemp,
+                fahrenheit: appState.useFahrenheit,
+                needsDaemonUpdate: appState.daemonVersionMismatch != nil
+            )
+            .environmentObject(language)
+        }
+        .menuBarExtraStyle(.window)
+    }
+}
+
+// MARK: - Menu Bar Label
+
+struct MenuBarLabel: View {
+    @EnvironmentObject var language: AppLanguageStore
+    let state: MonitorState
+    let maxTemp: Float?
+    var fahrenheit: Bool = false
+    var needsDaemonUpdate: Bool = false
+
+    var body: some View {
+        HStack(spacing: 3) {
+            Image(systemName: iconName)
+                .overlay(alignment: .topTrailing) {
+                    // Small dot when the daemon is out of sync — visible without
+                    // opening the menu, for users who never touch the CLI.
+                    if needsDaemonUpdate {
+                        Circle()
+                            .fill(.orange)
+                            .frame(width: 5, height: 5)
+                            .offset(x: 3, y: -2)
+                    }
+                }
+            if let tempC = maxTemp {
+                let display = fahrenheit ? tempC * 9 / 5 + 32 : tempC
+                Text("\(Int(display))°")
+                    .font(.system(.caption, design: .monospaced))
+            }
+        }
+        .help(language.text("ThermalForge: {reading}", ["reading": accessibleReading]))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("ThermalForge")
+        .accessibilityValue(accessibleReading)
+    }
+
+    private var accessibleReading: String {
+        guard let tempC = maxTemp else { return language.text("Temperature unavailable") }
+        let display = fahrenheit ? tempC * 9 / 5 + 32 : tempC
+        return "\(Int(display))°\(fahrenheit ? "F" : "C")"
+    }
+
+    private var iconName: String {
+        switch state {
+        case .safetyOverride: return "exclamationmark.triangle.fill"
+        case .active: return "fan.fill"
+        case .idle: return "fan"
         }
     }
 }

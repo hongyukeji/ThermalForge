@@ -45,5 +45,6 @@
   "CPU": "CPU",
   "GPU": "GPU",
   "RAM": "RAM",
-  "SSD": "SSD"
+  "SSD": "SSD",
+  "Profile": "模式"
 }

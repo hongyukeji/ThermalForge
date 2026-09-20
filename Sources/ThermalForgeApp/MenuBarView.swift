@@ -91,43 +91,45 @@ struct MenuBarView: View {
 
             Divider().padding(.vertical, 4)
 
-            // Explicit actions: a view refresh must never select a profile.
+            // Profile picker
             SectionHeader(title: language.text("PROFILE"))
-            VStack(spacing: 6) {
+            Picker(language.text("Profile"), selection: Binding(
+                get: { appState.activeProfile.id },
+                set: { id in
+                    if let profile = FanProfile.builtIn.first(where: { $0.id == id }) {
+                        appState.selectProfile(profile)
+                    }
+                }
+            )) {
                 ForEach(FanProfile.builtIn) { profile in
-                    Button { appState.selectProfile(profile) } label: {
-                        HStack {
-                            Image(systemName: "checkmark")
-                                .frame(width: 12)
-                                .opacity(appState.activeProfile.id == profile.id ? 1 : 0)
-                            Text(language.text(profile.name))
-                            Spacer()
-                            if !profile.curve.handsOff {
-                                let unit = appState.useFahrenheit ? "F" : "C"
-                                if profile.curve.instantEngage {
-                                    // Max: show instant trigger temp
-                                    let startC = profile.curve.startTemp
-                                    let startDisp = appState.useFahrenheit ? startC * 9 / 5 + 32 : startC
-                                    Text(language.text("{temperature}°{unit} instant", ["temperature": String(Int(startDisp)), "unit": unit]))
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
-                                } else {
-                                    let startC = profile.curve.startTemp
-                                    let ceilC = profile.curve.ceilingTemp
-                                    let startDisp = appState.useFahrenheit ? startC * 9 / 5 + 32 : startC
-                                    let ceilDisp = appState.useFahrenheit ? ceilC * 9 / 5 + 32 : ceilC
-                                    Text("\(Int(startDisp))→\(Int(ceilDisp))°\(unit)")
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
-                                }
+                    HStack {
+                        Text(language.text(profile.name))
+                        Spacer()
+                        if !profile.curve.handsOff {
+                            let unit = appState.useFahrenheit ? "F" : "C"
+                            if profile.curve.instantEngage {
+                                // Max: show instant trigger temp
+                                let startC = profile.curve.startTemp
+                                let startDisp = appState.useFahrenheit ? startC * 9 / 5 + 32 : startC
+                                Text(language.text("{temperature}°{unit} instant", ["temperature": String(Int(startDisp)), "unit": unit]))
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            } else {
+                                let startC = profile.curve.startTemp
+                                let ceilC = profile.curve.ceilingTemp
+                                let startDisp = appState.useFahrenheit ? startC * 9 / 5 + 32 : startC
+                                let ceilDisp = appState.useFahrenheit ? ceilC * 9 / 5 + 32 : ceilC
+                                Text("\(Int(startDisp))→\(Int(ceilDisp))°\(unit)")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
                             }
                         }
-                        .contentShape(Rectangle())
                     }
-                    .buttonStyle(.plain)
-                    .accessibilityAddTraits(appState.activeProfile.id == profile.id ? .isSelected : [])
+                    .tag(profile.id)
                 }
             }
+            .pickerStyle(.inline)
+            .labelsHidden()
             .padding(.horizontal, 12)
 
             Divider().padding(.vertical, 4)
