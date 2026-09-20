@@ -62,6 +62,7 @@ struct MenuBarView: View {
             // Fan speeds
             if let status = appState.latestStatus {
                 SectionHeader(title: language.text("FANS"))
+                    .padding(.top, 4)
                 ForEach(status.fans, id: \.index) { fan in
                     HStack {
                         Text(language.text("Fan {index}", ["index": String(fan.index)]))
@@ -164,6 +165,7 @@ struct MenuBarView: View {
                 .buttonStyle(.bordered)
             }
             .padding(.horizontal, 12)
+            .padding(.vertical, 4)
 
             Divider().padding(.vertical, 4)
 
@@ -177,12 +179,16 @@ struct MenuBarView: View {
             }
             .accessibilityIdentifier("com.thermalforge.language")
             .padding(.horizontal, 12)
+            .padding(.top, 4)
+            .padding(.bottom, 6)
 
             // Footer
             Toggle(language.text("°F / °C"), isOn: $appState.useFahrenheit)
                 .padding(.horizontal, 12)
+                .padding(.bottom, 6)
             Toggle(language.text("Launch at Login"), isOn: $appState.launchAtLogin)
                 .padding(.horizontal, 12)
+                .padding(.bottom, 6)
 
             Button(action: { NSApp.terminate(nil) }) {
                 Text(language.text("Quit ThermalForge"))
@@ -190,7 +196,6 @@ struct MenuBarView: View {
             .buttonStyle(.plain)
             .foregroundStyle(.secondary)
             .padding(.horizontal, 12)
-            .padding(.top, 4)
             .padding(.bottom, 10)
         }
         .frame(width: 260)

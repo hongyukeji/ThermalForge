@@ -13,7 +13,9 @@ Built in 2026 with Swift. No subscriptions, no telemetry, no ads.
 
 ## Fork maintenance build
 
-This fork builds **0.2.3.6**, following official main (`8a344f6`). It keeps the hardware-verified M4 slow-handoff repair, checked fan handback, isolated persistence tests, and GUI support for English, Simplified Chinese and Traditional Chinese. The menu bar, app lifecycle, profile Picker, Smart algorithm, wake recovery, sensors, 100ms sampling and 95°C threshold follow upstream. Menu width changes naturally with temperature digits.
+This fork builds **0.2.3.7**, following official main (`8a344f6`). It keeps the hardware-verified M4 slow-handoff repair, checked fan handback, isolated persistence tests, and GUI support for English, Simplified Chinese and Traditional Chinese. The menu bar, app lifecycle, profile Picker, Smart algorithm, wake recovery, sensors, 100ms sampling and 95°C threshold follow upstream. Menu width changes naturally with temperature digits.
+
+The [0.2.3.7 spacing update](docs/menu-spacing-20260921.md) aligns section and footer spacing in the native panel.
 
 See [the maintenance audit](docs/upstream-followups-20260921.md) for retained and removed changes, evidence and validation. [Localization maintenance](docs/gui-localization.md) explains translation and packaging. [The original repair notes](docs/m4-handoff-repair.md) contain historical 0.2.3.2 measurements. The upstream Homebrew/source installation instructions below do **not** install this fork's changes.
 
