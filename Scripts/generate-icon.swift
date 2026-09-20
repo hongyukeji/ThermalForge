@@ -1,6 +1,6 @@
 #!/usr/bin/env swift
 //
-// Generates ThermalForge app icon from SF Symbol
+// Generates ThermalForgePro app icon from SF Symbol
 //
 
 import AppKit
@@ -57,7 +57,7 @@ func savePNG(_ image: NSImage, to path: String) {
 }
 
 // Create iconset directory
-let iconsetPath = "ThermalForge.iconset"
+let iconsetPath = "ThermalForgePro.iconset"
 try? FileManager.default.removeItem(atPath: iconsetPath)
 try! FileManager.default.createDirectory(atPath: iconsetPath, withIntermediateDirectories: true)
 

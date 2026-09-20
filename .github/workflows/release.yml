@@ -1,0 +1,27 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test
+        run: swift test
+      - name: Build distribution
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: bash Scripts/package-release.sh
+      - name: Check packaged resources
+        run: bash Scripts/check-localization-package.sh .build/release
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: gh release create "$RELEASE_TAG" dist/*.tar.gz dist/SHA256SUMS --verify-tag --title "ThermalForgePro $RELEASE_TAG" --notes-file CHANGELOG.md

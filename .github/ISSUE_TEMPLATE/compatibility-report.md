@@ -1,22 +1,22 @@
 ---
 name: Compatibility Report
-about: Report whether ThermalForge works on your Mac
+about: Report whether ThermalForgePro works on your Mac
 title: "[Compat] Mac __ M__"
 labels: compatibility
 ---
 
 **Machine:** MacBook Pro M__ (year)
 **macOS version:**
-**thermalforge version:**
+**thermalforgepro version:**
 
 ## Results
 
-Run `thermalforge discover --output discover.txt` and attach the file.
+Run `thermalforgepro discover --output discover.txt` and attach the file.
 
-- [ ] `thermalforge status` works (reads fans + temps)
-- [ ] `sudo thermalforge max` works (fans spin up)
-- [ ] `sudo thermalforge auto` works (fans reset)
-- [ ] `sudo thermalforge install` works (daemon starts)
+- [ ] `thermalforgepro status` works (reads fans + temps)
+- [ ] `sudo thermalforgepro max` works (fans spin up)
+- [ ] `sudo thermalforgepro auto` works (fans reset)
+- [ ] `sudo thermalforgepro install` works (daemon starts)
 - [ ] Menu bar app shows temps
 
 ## Discover output

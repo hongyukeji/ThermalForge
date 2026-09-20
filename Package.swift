@@ -3,41 +3,41 @@
 import PackageDescription
 
 let package = Package(
-    name: "ThermalForge",
+    name: "ThermalForgePro",
     platforms: [.macOS(.v14)],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.3.0"),
     ],
     targets: [
         .target(
-            name: "ThermalForgeLocalization",
+            name: "ThermalForgeProLocalization",
             resources: [.process("Resources")]
         ),
         .target(
-            name: "ThermalForgeCore",
-            path: "Sources/ThermalForgeCore",
+            name: "ThermalForgeProCore",
+            path: "Sources/ThermalForgeProCore",
             linkerSettings: [
                 .linkedFramework("Metal"),
             ]
         ),
         .executableTarget(
-            name: "thermalforge",
+            name: "thermalforgepro",
             dependencies: [
-                "ThermalForgeCore",
-                "ThermalForgeLocalization",
+                "ThermalForgeProCore",
+                "ThermalForgeProLocalization",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ],
-            path: "Sources/thermalforge"
+            path: "Sources/thermalforgepro"
         ),
         .executableTarget(
-            name: "ThermalForgeApp",
-            dependencies: ["ThermalForgeCore", "ThermalForgeLocalization"],
-            path: "Sources/ThermalForgeApp"
+            name: "ThermalForgeProApp",
+            dependencies: ["ThermalForgeProCore", "ThermalForgeProLocalization"],
+            path: "Sources/ThermalForgeProApp"
         ),
         .testTarget(
-            name: "ThermalForgeTests",
-            dependencies: ["ThermalForgeCore", "ThermalForgeApp", "ThermalForgeLocalization"],
-            path: "Tests/ThermalForgeTests"
+            name: "ThermalForgeProTests",
+            dependencies: ["ThermalForgeProCore", "ThermalForgeProApp", "ThermalForgeProLocalization"],
+            path: "Tests/ThermalForgeProTests"
         ),
     ]
 )
