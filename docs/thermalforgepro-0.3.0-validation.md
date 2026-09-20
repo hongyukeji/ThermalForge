@@ -1,5 +1,9 @@
 # ThermalForgePro 0.3.0 validation
 
+Historical record only: 0.3.0 was withdrawn after later testing found menu sizing
+and daemon crash defects. See the [0.3.3 validation](thermalforgepro-0.3.3-validation.md)
+for the current replacement; the old release link below is retained as historical context.
+
 Verified on 2026-09-21. Release source: `3907bc5523b1d04f880788a47f9390a1a8792920`.
 
 ## Published artifacts
