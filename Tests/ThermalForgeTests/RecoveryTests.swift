@@ -97,7 +97,12 @@ struct RecoveryTests {
         var applied: [String] = []
         // The hold is cleared during the wake delay, before recovery runs.
         state = DaemonHoldState(command: nil, owner: "none")
-        WakeRecovery.reapply(lock: lock, snapshot: { state }, apply: { applied.append($0) })
+        WakeRecovery.reapply(lock: lock, snapshot: {
+            let unexpectedlyUnlocked = lock.try()
+            if unexpectedlyUnlocked { lock.unlock() }
+            #expect(!unexpectedlyUnlocked)
+            return state
+        }, apply: { applied.append($0) })
         #expect(applied.isEmpty)
         // Both a new CLI command and an unchanged hot app hold must survive.
         for owner in ["cli", "app"] {
