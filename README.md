@@ -4,12 +4,18 @@
 
 Built in 2026 with Swift. No subscriptions, no telemetry, no ads.
 
-[![CI](https://github.com/ProducerGuy/ThermalForge/actions/workflows/ci.yml/badge.svg)](https://github.com/ProducerGuy/ThermalForge/actions/workflows/ci.yml)
+[![CI](https://github.com/hongyukeji/ThermalForge/actions/workflows/ci.yml/badge.svg)](https://github.com/hongyukeji/ThermalForge/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![macOS 14+](https://img.shields.io/badge/macOS-14%2B-black?logo=apple)](https://www.apple.com/macos/)
 [![Apple Silicon](https://img.shields.io/badge/Apple%20Silicon-M1%E2%80%93M5-orange)](https://support.apple.com/en-us/116943)
 
 ---
+
+## Fork repair: slow M4 fan handoff
+
+This fork includes **0.2.3.2**, a local repair based on upstream v0.2.3, not an upstream release. It fixes communication timeouts during slow manual fan acquisition, keeps heartbeat/state/version requests responsive, and avoids repeating the unlock sequence when fans are already under manual control. Thermal curves and safety thresholds are unchanged.
+
+See [the repair notes and validation boundaries](docs/m4-handoff-repair.md) for regression tests, two M4 Max hardware runs, and build instructions. The upstream Homebrew/source installation instructions below do **not** install this fork's repair.
 
 ## Why ThermalForge?
 
