@@ -106,13 +106,13 @@ final class StatusBarController: NSObject, NSPopoverDelegate {
         button.attributedTitle = NSAttributedString(string: "")
     }
 
-    /// Three fixed columns; a space holds the hundreds place when there is
-    /// no digit for it, so every value renders at the same width.
+    /// The renderer reserves three columns on the right. A leading blank would
+    /// widen the visible gap between a two-digit reading and the fan icon.
     private func temperatureField() -> String? {
         guard let tempC = appState.maxTemp else { return nil }
         let display = appState.useFahrenheit ? tempC * 9 / 5 + 32 : tempC
         return String(
-            format: "%3d",
+            format: "%d",
             locale: Locale(identifier: "en_US_POSIX"),
             Int(display)
         )
@@ -149,8 +149,9 @@ final class StatusBarController: NSObject, NSPopoverDelegate {
 /// The glyph and the temperature field are composited into one image:
 /// the status button's own layout ignores kerning, paragraph indents and
 /// attachment placement, and cannot pack the field into the glyph's
-/// right side bearing. The three-column field keeps the item width
-/// constant; the unbadged composite is a template, so the system tints
+/// right side bearing. A three-column slot keeps the item width constant
+/// with the digits aligned to its left; the unbadged composite is a template,
+/// so the system tints
 /// it exactly like the other menu-bar items.
 @MainActor
 enum StatusItemRenderer {
@@ -167,10 +168,11 @@ enum StatusItemRenderer {
         let base = NSImage(systemSymbolName: symbol, accessibilityDescription: "ThermalForge")
             ?? NSImage()
         let iconSize = base.size
-        let title = title(field: field, needsDot: needsDot)
+        let title = title(field: field?.trimmingCharacters(in: .whitespaces), needsDot: needsDot)
         let textSize = title.size()
+        let reservedWidth = field == nil ? 0 : Self.title(field: "888", needsDot: needsDot).size().width
         let canvas = NSSize(
-            width: iconSize.width + glyphFieldGap + textSize.width + (needsDot ? 4 : 0),
+            width: iconSize.width + glyphFieldGap + max(textSize.width, reservedWidth) + (needsDot ? 4 : 0),
             height: max(iconSize.height, ceil(textSize.height))
         )
         let image = NSImage(size: canvas, flipped: false) { _ in
