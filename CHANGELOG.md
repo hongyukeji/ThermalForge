@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.2.3.12
+
+- Reserve a minimum menu-bar label width for the fan icon and a two-digit
+  temperature. Center the complete group; allow three-digit readings to expand
+  naturally without shrinking or truncating the text.
+- Preserve native MenuBarExtra interactions, automatic popup height, localized
+  accessibility text, idle/active/safety symbols and the orange update badge.
+- Add five display regressions covering width, centering, appearance, units and
+  missing data. Validate display boundaries through 999 degrees without sending
+  synthetic inputs to the controller. Fan control and temperature collection
+  are unchanged.
+
 ## 0.2.3.11
 
 - Bound runtime logs to 5 MiB per file and 50 MiB per process user's log

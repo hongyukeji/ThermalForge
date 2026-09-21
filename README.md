@@ -10,7 +10,7 @@ ThermalForgePro 是基于 [ThermalForge](https://github.com/ProducerGuy/ThermalF
 
 ## 版本规则
 
-版本号采用 **官方版本号 + Pro 修订号**。当前 `0.2.3.11` 基于官方 `0.2.3`，后续修订为 `0.2.3.12`、`0.2.3.13`。只有实际合入新的官方版本后，才更新前三段，例如基于官方 `0.2.4` 的首个修订为 `0.2.4.1`。
+版本号采用 **官方版本号 + Pro 修订号**。当前 `0.2.3.12` 基于官方 `0.2.3`，后续修订为 `0.2.3.13`、`0.2.3.14`。只有实际合入新的官方版本后，才更新前三段，例如基于官方 `0.2.4` 的首个修订为 `0.2.4.1`。
 
 应用和 CLI 均按每段数字从左到右比较版本，不为历史版本设置例外。例如 `0.2.3.10 > 0.2.3.9`，但 `0.2.3.10 < 0.3.3`。旧 `0.3.x` 编号的首次迁移通过下方 Homebrew 命令或发行包完成；Homebrew 使用其官方支持的 [`version_scheme`](https://docs.brew.sh/Formula-Cookbook#version-scheme-changes) 表达这次编号体系变更，应用代码不反转版本大小关系。
 
@@ -99,6 +99,6 @@ cd ThermalForgePro
 
 也可在 [Releases](https://github.com/hongyukeji/ThermalForgePro/releases/latest) 下载完整应用与 CLI。解压后执行 `sudo ./bin/thermalforgepro install`，迁移旧版时加上 `--migrate-thermalforge`。
 
-当前发行包使用 ad-hoc 签名，尚未进行 Apple 公证；Homebrew 安装会在本机从源码构建。[0.2.3.11 验证记录](docs/thermalforgepro-0.2.3.11-validation.md) 列出了已完成的测试和验证范围。
+当前发行包使用 ad-hoc 签名，尚未进行 Apple 公证；Homebrew 安装会在本机从源码构建。[0.2.3.12 验证记录](docs/thermalforgepro-0.2.3.12-validation.md) 列出了已完成的测试和验证范围。
 
 开发验证：`bash Scripts/test.sh`、`swift build -c release`、`bash Scripts/check-localization-package.sh`。语言资源维护见 [GUI localization](docs/gui-localization.md)。`docs/upstream/` 与早期验收文档保留历史记录，不代表当前发行版或所有机型的测试结论。
