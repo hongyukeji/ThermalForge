@@ -46,10 +46,12 @@ open /Applications/MacFanPro.app
 ```bash
 brew update
 brew upgrade macfanpro
+macfanpro auto --stop-app
 sudo "$(brew --prefix macfanpro)/bin/macfanpro" install
+open /Applications/MacFanPro.app
 ```
 
-最后一步明确使用刚升级的 Homebrew 程序，同步 root 后台副本和 `/Applications` 中的应用。应用内更新提示也只跟踪本仓库发行版。
+同步前先退出菜单栏应用并恢复自动控制，再使用刚升级的 Homebrew 程序更新 root 后台副本和 `/Applications` 中的应用，最后重新打开。应用内更新提示也只跟踪本仓库发行版。
 
 ```bash
 sudo macfanpro uninstall
