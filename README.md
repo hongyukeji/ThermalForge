@@ -1,12 +1,18 @@
 # ThermalForgePro
 
 [![CI](https://github.com/hongyukeji/ThermalForgePro/actions/workflows/ci.yml/badge.svg)](https://github.com/hongyukeji/ThermalForgePro/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/hongyukeji/ThermalForgePro)](https://github.com/hongyukeji/ThermalForgePro/releases/latest)
+[![Release](https://img.shields.io/github/v/release/hongyukeji/ThermalForgePro?sort=date)](https://github.com/hongyukeji/ThermalForgePro/releases/latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 面向 Apple Silicon Mac 的免费开源风扇控制工具，提供菜单栏应用、命令行和独立后台服务。
 
 ThermalForgePro 是基于 [ThermalForge](https://github.com/ProducerGuy/ThermalForge) 的独立衍生发行，由 hongyukeji 维护，使用自己的版本、安装名称和更新渠道。上游版权与 MIT 许可完整保留，详见 [来源说明](NOTICE.md)。
+
+## 版本规则
+
+版本号采用 **官方版本号 + Pro 修订号**。当前 `0.2.3.9` 基于官方 `0.2.3`，接续本分支此前的 `0.2.3.8`；后续修订为 `0.2.3.10`、`0.2.3.11`。只有实际合入新的官方版本后，才更新前三段，例如基于官方 `0.2.4` 的首个修订为 `0.2.4.1`。
+
+`0.2.3.9` 接替旧编号 `0.3.3`，包含其全部修复。Homebrew 已配置版本规则迁移，可以正常执行 `brew upgrade`。旧 `0.3.x` 应用的更新判断不认识新编号，首次请通过下方 Homebrew 命令或发行包升级；升级后应用按新规则提示更新。
 
 ## 功能
 
@@ -50,10 +56,10 @@ open /Applications/ThermalForgePro.app
 ```bash
 brew update
 brew upgrade thermalforgepro
-sudo thermalforgepro install
+sudo "$(brew --prefix thermalforgepro)/bin/thermalforgepro" install
 ```
 
-最后一步同步 root 后台副本和 `/Applications` 中的应用。应用内更新提示也只跟踪本仓库发行版。
+最后一步明确使用刚升级的 Homebrew 程序，同步 root 后台副本和 `/Applications` 中的应用。应用内更新提示也只跟踪本仓库发行版。
 
 ```bash
 sudo thermalforgepro uninstall

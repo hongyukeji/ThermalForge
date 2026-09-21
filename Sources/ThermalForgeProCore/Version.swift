@@ -9,7 +9,30 @@
 //
 
 public enum ThermalForgeProVersion {
-    public static let current = "0.3.3"
+    /// Change the base only after integrating the corresponding upstream release.
+    public static let upstream = "0.2.3"
+    public static let revision = 9
+    public static let current = "\(upstream).\(revision)"
+
+    /// Release ordering includes the one-time switch from independent 0.3.x
+    /// numbering to upstream-based numbering. Protocol capability checks continue
+    /// to use the ordinary numeric comparison below.
+    public static func isNewerRelease(_ candidate: String, than installed: String) -> Bool {
+        func valid(_ version: String) -> Bool {
+            let parts = version.split(separator: ".", omittingEmptySubsequences: false)
+            return (3...4).contains(parts.count) && parts.allSatisfy { part in
+                !part.isEmpty && part.utf8.allSatisfy { (48...57).contains($0) } && Int(part) != nil
+            }
+        }
+        guard valid(candidate), valid(installed) else { return false }
+        let legacy = ["0.3.0", "0.3.1", "0.3.2", "0.3.3"]
+        func upstreamBased(_ version: String) -> Bool {
+            version.split(separator: ".").count == 4 && atLeast(version, "0.2.3.9")
+        }
+        if legacy.contains(installed), upstreamBased(candidate) { return true }
+        if legacy.contains(candidate), upstreamBased(installed) { return false }
+        return !atLeast(installed, candidate)
+    }
 
     /// Daemons at or above this version understand the fan-command protocol
     /// additions from 0.1.5: the `oneshot` token (unsupervised holds that don't

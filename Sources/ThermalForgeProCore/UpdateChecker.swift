@@ -52,15 +52,12 @@ public enum UpdateChecker {
     /// Pure comparison. Returns an AvailableUpdate iff `tagName` is a strictly newer
     /// version than `current`, else nil.
     ///
-    /// Strips a single leading "v" first: `ThermalForgeProVersion.atLeast` Int-parses on
-    /// dots, and "v0" parses to nil → 0, so "v0.2.1" would compare as 0.2.1's first
-    /// component being 0. A malformed tag (e.g. "vX.Y") therefore degrades to 0.0 and
-    /// yields nil — it can never produce a false "update available".
+    /// Strips a single leading "v", validates numeric components and applies the
+    /// release-numbering transition independently of daemon protocol compatibility.
     public static func evaluate(current: String, tagName: String, url: String) -> AvailableUpdate? {
         let tag = tagName.hasPrefix("v") ? String(tagName.dropFirst()) : tagName
         guard !tag.isEmpty else { return nil }
-        // Newer iff current is NOT already >= tag.
-        guard !ThermalForgeProVersion.atLeast(current, tag) else { return nil }
+        guard ThermalForgeProVersion.isNewerRelease(tag, than: current) else { return nil }
         return AvailableUpdate(version: tag, url: url)
     }
 

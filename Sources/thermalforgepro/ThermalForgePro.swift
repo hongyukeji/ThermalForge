@@ -851,9 +851,8 @@ struct Install: ParsableCommand {
                         """)
                     continue
                 }
-                // Strictly newer than what's installed (numeric, never downgrade).
-                guard ThermalForgeProVersion.atLeast(version, current),
-                      !ThermalForgeProVersion.atLeast(current, version) else { continue }
+                // Follow release order, including the upstream-numbering transition.
+                guard ThermalForgeProVersion.isNewerRelease(version, than: current) else { continue }
                 print("Re-syncing daemon binary from Homebrew keg \(version) at \(keg).")
                 try installBinary(from: URL(fileURLWithPath: keg).resolvingSymlinksInPath().path)
                 resynced = true

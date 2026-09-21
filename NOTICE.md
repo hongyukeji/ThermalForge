@@ -2,7 +2,8 @@
 
 ThermalForgePro is an independently maintained derivative of
 [ProducerGuy/ThermalForge](https://github.com/ProducerGuy/ThermalForge), based on
-upstream v0.2.3 and subsequent documentation updates. It is not an official
+upstream [v0.2.3](https://github.com/ProducerGuy/ThermalForge/releases/tag/v0.2.3)
+(commit `3fbaa527aee05a5a0ed2606f00b50254df9d614f`) and subsequent documentation updates. It is not an official
 ThermalForge release and does not imply endorsement by the upstream authors.
 
 The complete upstream MIT copyright and permission notice is retained in
