@@ -43,8 +43,9 @@ first transition requires Homebrew or the release download.
   After package acceptance, the installed runtime was resynchronized from Brew;
   the root-owned CLI matches the Brew binary exactly and the app signature passes
   strict verification.
-- GitHub explicitly marks 0.2.3.9 as latest. Healthy 0.3.3 remains a historical
-  release with a supersession note; previously withdrawn 0.3.0–0.3.2 remain absent.
+- GitHub explicitly marks 0.2.3.9 as latest and the sole public release. The 0.3.3
+  release and tag were removed after renumbering, and previously withdrawn
+  0.3.0–0.3.2 remain absent. Homebrew also removed the local 0.3.3 keg on upgrade.
 
 The downloaded ARM64 archive passed SHA256 verification:
 

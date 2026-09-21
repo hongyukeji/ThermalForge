@@ -1,5 +1,8 @@
 # ThermalForgePro 0.3.3 validation
 
+Historical acceptance for the fixes retained in 0.2.3.9. The 0.3.3 release and tag
+were removed after the numbering change; see the [current validation](thermalforgepro-0.2.3.9-validation.md).
+
 Verified on 2026-09-21 on a Mac16,5 (M4 Max), macOS 27.0 (26A428).
 Release source: `50e7e4fd9025ae873752b9ad7ad71b3398cf58b7`.
 

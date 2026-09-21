@@ -6,6 +6,8 @@
   0.2.3 and continues the earlier local maintenance sequence after 0.2.3.8.
 - Supersede Pro 0.3.3 without reverting its fixes. Release comparisons recognize
   the numbering transition; daemon protocol capability checks remain numeric.
+- Remove the obsolete 0.3.x public releases and tags; 0.2.3.9 is the sole public
+  release. Historical commits and validation records remain available.
 - Homebrew uses `version_scheme 1` so `brew upgrade` recognizes 0.2.3.9 as the
   successor to 0.3.3. Existing 0.3.x apps need this first upgrade through Homebrew
   or the release download because their built-in comparator predates this scheme.
