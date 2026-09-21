@@ -1,7 +1,8 @@
 # ThermalForgePro 0.2.3.9 validation
 
 Historical record: the version-specific comparison exceptions tested here were
-subsequently found to violate numeric ordering and are removed in 0.2.3.10.
+subsequently found to violate numeric ordering. This release and its tag have
+been withdrawn; see the correction and [current validation](thermalforgepro-0.2.3.10-validation.md).
 
 Verified on 2026-09-21 on the M4 Max running macOS 27.
 Release source: `d5fc6aec845dc5b5230fcdd6ab9c32430cd6fb1a`.

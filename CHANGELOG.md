@@ -8,6 +8,8 @@
   incorrectly treating 0.3.3.0 as newer than the equivalent 0.3.3.
 - Cover numeric order across both formats and equivalent zero revisions. Keep
   the numbering migration in Homebrew's supported `version_scheme` metadata.
+- Withdraw the superseded 0.2.3.9 public release and tag. The previously removed
+  0.3.x releases remain withdrawn; historical commits and records are preserved.
 
 ## 0.2.3.9
 
