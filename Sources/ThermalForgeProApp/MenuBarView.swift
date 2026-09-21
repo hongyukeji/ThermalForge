@@ -189,7 +189,8 @@ struct MenuBarView: View {
                 .padding(.bottom, 6)
             Toggle(language.text("Launch at Login"), isOn: $appState.launchAtLogin)
                 .padding(.horizontal, 12)
-                .padding(.bottom, 6)
+
+            Divider().padding(.vertical, 6)
 
             Button(action: { NSApp.terminate(nil) }) {
                 Text(language.text("Quit ThermalForgePro"))

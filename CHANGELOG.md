@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.3.13
+
+- Separate Quit ThermalForgePro from the preference controls with a full-width
+  divider and equal 6 pt spacing above and below it. Preserve automatic popup
+  height, menu interactions and the centered temperature label.
+
 ## 0.2.3.12
 
 - Reserve a minimum menu-bar label width for the fan icon and a two-digit

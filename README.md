@@ -10,7 +10,7 @@ ThermalForgePro 是基于 [ThermalForge](https://github.com/ProducerGuy/ThermalF
 
 ## 版本规则
 
-版本号采用 **官方版本号 + Pro 修订号**。当前 `0.2.3.12` 基于官方 `0.2.3`，后续修订为 `0.2.3.13`、`0.2.3.14`。只有实际合入新的官方版本后，才更新前三段，例如基于官方 `0.2.4` 的首个修订为 `0.2.4.1`。
+版本号采用 **官方版本号 + Pro 修订号**。当前 `0.2.3.13` 基于官方 `0.2.3`，后续修订为 `0.2.3.14`、`0.2.3.15`。只有实际合入新的官方版本后，才更新前三段，例如基于官方 `0.2.4` 的首个修订为 `0.2.4.1`。
 
 应用和 CLI 均按每段数字从左到右比较版本，不为历史版本设置例外。例如 `0.2.3.10 > 0.2.3.9`，但 `0.2.3.10 < 0.3.3`。旧 `0.3.x` 编号的首次迁移通过下方 Homebrew 命令或发行包完成；Homebrew 使用其官方支持的 [`version_scheme`](https://docs.brew.sh/Formula-Cookbook#version-scheme-changes) 表达这次编号体系变更，应用代码不反转版本大小关系。
 
@@ -23,6 +23,12 @@ ThermalForgePro 是基于 [ThermalForge](https://github.com/ProducerGuy/ThermalF
 - 独立的 `thermalforgepro` 命令、应用标识、后台服务、日志和配置目录。
 
 需要 macOS 14 或更高版本。源码构建需要 Xcode 16 或更高版本。实机验证以 M4 Max 为主，其他 Apple Silicon 型号需要各自实测。
+
+## 界面预览
+
+本机运行截图（简体中文）：
+
+<img src="docs/images/menu-bar-zh-CN.png" alt="ThermalForgePro 菜单，退出按钮上方带有分隔线" width="320">
 
 ## Homebrew 安装
 
