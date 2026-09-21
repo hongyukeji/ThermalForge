@@ -71,7 +71,7 @@ Reproduction commands:
 ```sh
 swift test
 swift test -c release
-bash scripts/check-localization-package.sh "$(swift build -c release --show-bin-path)"
+bash Scripts/check-localization-package.sh "$(swift build -c release --show-bin-path)"
 ```
 
 The machine is an M4 Max (Mac16,5), macOS 27.0 (26A428). Physical 1x displays,
@@ -111,13 +111,15 @@ Evidence is in the `local-recheck-20260922-030617` subdirectory of the local aud
 directory below; `summary.json` records the final checks. This is a bounded local
 observation and does not extend the platform or long-duration coverage above.
 
-## Local state
+## Development-test local state
 
 The candidate was run from an isolated application bundle. The installed
 0.2.3.11 app was restored afterward; its executable, root CLI and daemon plist
 hashes are unchanged. Smart, system language, Celsius and the login setting are
 preserved. The ordinary next-update-check timestamp advanced naturally. Test
-fixtures have been stopped. No release, Homebrew update or remote push is included.
+fixtures have been stopped. That development-test stage did not include a
+release, Homebrew update or remote push. Subsequent publication and installation
+are recorded in [the 0.2.3.12 release validation](thermalforgepro-0.2.3.12-validation.md).
 Detailed local evidence is under
 `~/Library/Application Support/ThermalForgePro/menu-label-20260922/`.
 
