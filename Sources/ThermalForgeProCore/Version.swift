@@ -11,12 +11,10 @@
 public enum ThermalForgeProVersion {
     /// Change the base only after integrating the corresponding upstream release.
     public static let upstream = "0.2.3"
-    public static let revision = 9
+    public static let revision = 10
     public static let current = "\(upstream).\(revision)"
 
-    /// Release ordering includes the one-time switch from independent 0.3.x
-    /// numbering to upstream-based numbering. Protocol capability checks continue
-    /// to use the ordinary numeric comparison below.
+    /// Strict dotted-numeric release ordering, with no version-specific exceptions.
     public static func isNewerRelease(_ candidate: String, than installed: String) -> Bool {
         func valid(_ version: String) -> Bool {
             let parts = version.split(separator: ".", omittingEmptySubsequences: false)
@@ -25,12 +23,6 @@ public enum ThermalForgeProVersion {
             }
         }
         guard valid(candidate), valid(installed) else { return false }
-        let legacy = ["0.3.0", "0.3.1", "0.3.2", "0.3.3"]
-        func upstreamBased(_ version: String) -> Bool {
-            version.split(separator: ".").count == 4 && atLeast(version, "0.2.3.9")
-        }
-        if legacy.contains(installed), upstreamBased(candidate) { return true }
-        if legacy.contains(candidate), upstreamBased(installed) { return false }
         return !atLeast(installed, candidate)
     }
 

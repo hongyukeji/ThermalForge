@@ -1,6 +1,17 @@
 # Changelog
 
+## 0.2.3.10
+
+- Remove hardcoded release-order exceptions for the retired 0.3.x versions.
+  App update checks and CLI automatic re-sync use ordinary dotted-numeric order.
+- Fix inconsistent ordering across three- and four-component versions, including
+  incorrectly treating 0.3.3.0 as newer than the equivalent 0.3.3.
+- Cover numeric order across both formats and equivalent zero revisions. Keep
+  the numbering migration in Homebrew's supported `version_scheme` metadata.
+
 ## 0.2.3.9
+
+The version-specific comparison exceptions in this release are corrected in 0.2.3.10.
 
 - Use `<upstream version>.<Pro revision>`: this release is based on ThermalForge
   0.2.3 and continues the earlier local maintenance sequence after 0.2.3.8.

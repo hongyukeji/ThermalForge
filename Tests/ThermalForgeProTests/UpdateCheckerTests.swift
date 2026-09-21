@@ -54,13 +54,24 @@ struct UpdateCheckerTests {
         }
     }
 
-    @Test("Upstream-based releases supersede the retired independent numbering")
-    func numberingTransition() {
-        for legacy in ["0.3.0", "0.3.1", "0.3.2", "0.3.3"] {
-            #expect(UpdateChecker.evaluate(current: legacy, tagName: "v0.2.3.9", url: url)?.version == "0.2.3.9")
-            #expect(UpdateChecker.evaluate(current: "0.2.3.9", tagName: "v\(legacy)", url: url) == nil)
+    @Test("Three- and four-component releases share a consistent numeric order")
+    func numericOrderAcrossReleaseFormats() {
+        let versions = ["0.2.3.8", "0.2.3.9", "0.2.3.10", "0.2.4", "0.2.4.1",
+                        "0.3.0", "0.3.0.1", "0.3.1", "0.3.2", "0.3.3", "0.3.4", "1.0.0"]
+        for (i, installed) in versions.enumerated() {
+            for (j, candidate) in versions.enumerated() {
+                let update = UpdateChecker.evaluate(current: installed, tagName: "v\(candidate)", url: url)
+                #expect(update?.version == (j > i ? candidate : nil))
+            }
         }
-        #expect(UpdateChecker.evaluate(current: "0.3.3", tagName: "v0.2.3.8", url: url) == nil)
+    }
+
+    @Test("An omitted fourth component is equivalent to zero")
+    func equivalentNumericVersions() {
+        for version in ["0.2.3", "0.3.3", "1.0.0"] {
+            #expect(UpdateChecker.evaluate(current: version, tagName: "v\(version).0", url: url) == nil)
+            #expect(UpdateChecker.evaluate(current: "\(version).0", tagName: "v\(version)", url: url) == nil)
+        }
     }
 
     @Test("Revision and upstream-base changes preserve numeric order")
@@ -78,6 +89,6 @@ struct UpdateCheckerTests {
         #expect(ThermalForgeProVersion.atLeast("0.2.3.9", ThermalForgeProVersion.oneshotProtocolSince))
         #expect(!ThermalForgeProVersion.atLeast("0.1.4", ThermalForgeProVersion.oneshotProtocolSince))
         #expect(!ThermalForgeProVersion.atLeast("0.2.3.9", "0.3.3"))
-        #expect(ThermalForgeProVersion.isNewerRelease("0.2.3.9", than: "0.3.3"))
+        #expect(!ThermalForgeProVersion.isNewerRelease("0.2.3.9", than: "0.3.3"))
     }
 }

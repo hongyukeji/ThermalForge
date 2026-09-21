@@ -52,8 +52,8 @@ public enum UpdateChecker {
     /// Pure comparison. Returns an AvailableUpdate iff `tagName` is a strictly newer
     /// version than `current`, else nil.
     ///
-    /// Strips a single leading "v", validates numeric components and applies the
-    /// release-numbering transition independently of daemon protocol compatibility.
+    /// Strips a single leading "v", validates numeric components and compares
+    /// their values from left to right, treating omitted components as zero.
     public static func evaluate(current: String, tagName: String, url: String) -> AvailableUpdate? {
         let tag = tagName.hasPrefix("v") ? String(tagName.dropFirst()) : tagName
         guard !tag.isEmpty else { return nil }

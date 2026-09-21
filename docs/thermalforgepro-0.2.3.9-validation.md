@@ -1,5 +1,8 @@
 # ThermalForgePro 0.2.3.9 validation
 
+Historical record: the version-specific comparison exceptions tested here were
+subsequently found to violate numeric ordering and are removed in 0.2.3.10.
+
 Verified on 2026-09-21 on the M4 Max running macOS 27.
 Release source: `d5fc6aec845dc5b5230fcdd6ab9c32430cd6fb1a`.
 Homebrew formula: `25c5c067f7740c7440287c6c575ddc617b1ce6fc`.
