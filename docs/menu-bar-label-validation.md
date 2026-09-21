@@ -118,10 +118,7 @@ The candidate was run from an isolated application bundle. The installed
 hashes are unchanged. Smart, system language, Celsius and the login setting are
 preserved. The ordinary next-update-check timestamp advanced naturally. Test
 fixtures have been stopped. That development-test stage did not include a
-release, Homebrew update or remote push. Subsequent publication and installation
-are recorded in [the 0.2.3.12 release validation](thermalforgepro-0.2.3.12-validation.md).
-Detailed local evidence is under
-`~/Library/Application Support/ThermalForgePro/menu-label-20260922/`.
+release, Homebrew update or remote push.
 
 ## References
 

@@ -6,13 +6,13 @@
 
 面向 Apple Silicon Mac 的免费开源风扇控制工具，提供菜单栏应用、命令行和独立后台服务。
 
-MacFanPro（原名 ThermalForgePro）是基于 [ThermalForge](https://github.com/ProducerGuy/ThermalForge) 的独立衍生发行，由 hongyukeji 维护，使用自己的版本、安装名称和更新渠道。上游版权与 MIT 许可完整保留，详见 [来源说明](NOTICE.md)。
+MacFanPro是基于 [ThermalForge](https://github.com/ProducerGuy/ThermalForge) 的独立衍生发行，由 hongyukeji 维护，使用自己的版本、安装名称和更新渠道。上游版权与 MIT 许可完整保留，详见 [来源说明](NOTICE.md)。
 
 ## 版本规则
 
-版本号采用 **官方版本号 + 第四段修订号**。当前 `0.2.3.14` 基于官方 `0.2.3`，后续修订为 `0.2.3.15`、`0.2.3.16`。只有实际合入新的官方版本后，才更新前三段，例如基于官方 `0.2.4` 的首个修订为 `0.2.4.1`。
+版本号采用 **官方版本号 + 第四段修订号**。当前 `0.2.3.15` 基于官方 `0.2.3`，后续修订为 `0.2.3.16`、`0.2.3.17`。只有实际合入新的官方版本后，才更新前三段，例如基于官方 `0.2.4` 的首个修订为 `0.2.4.1`。
 
-应用和 CLI 均按每段数字从左到右比较版本，不为历史版本设置例外。例如 `0.2.3.10 > 0.2.3.9`，但 `0.2.3.10 < 0.3.3`。旧 `0.3.x` 编号的首次迁移通过下方 Homebrew 命令或发行包完成；Homebrew 使用其官方支持的 [`version_scheme`](https://docs.brew.sh/Formula-Cookbook#version-scheme-changes) 表达这次编号体系变更，应用代码不反转版本大小关系。
+应用和 CLI 按每段数字从左到右比较版本，例如 `0.2.3.10 > 0.2.3.9`。
 
 ## 功能
 
@@ -40,22 +40,6 @@ open /Applications/MacFanPro.app
 ```
 
 也可以用完整名称首次安装：`brew install macfanpro/tap/macfanpro`。Homebrew 管理下载和构建，`sudo macfanpro install` 将后台程序复制到 root 所有的路径、注册服务并安装菜单栏应用。应用与普通控制命令之后无需 sudo。需要开机启动时，在应用中开启“登录时启动”。
-
-## 从 ThermalForge 迁移
-
-先关闭旧应用的“登录时启动”，然后运行：
-
-```bash
-brew tap macfanpro/tap
-brew install macfanpro
-sudo macfanpro install --migrate-thermalforge
-brew uninstall thermalforge
-open /Applications/MacFanPro.app
-```
-
-迁移会备份旧应用、CLI 和后台配置，停止旧控制器、恢复 Apple 自动控制，再安装 MacFanPro。语言、温控模式、温度单位、校准、用户模式及研究日志会复制到 MacFanPro；已有 MacFanPro 配置优先，旧数据不会删除。安装过程中失败会尝试恢复旧运行程序，终端会显示备份位置。迁移后在新应用中开启“登录时启动”。
-
-原来的 `thermalforge` 配方与命令不再用于维护 MacFanPro。确认旧配方卸载后，可用 `brew untap producerguy/tap` 移除旧源。
 
 ## 更新和卸载
 
@@ -100,11 +84,10 @@ macfanpro --help
 git clone https://github.com/macfanpro/macfanpro.git
 cd macfanpro
 ./setup.sh
-# 替换旧版时：./setup.sh --migrate-thermalforge
 ```
 
-也可在 [Releases](https://github.com/macfanpro/macfanpro/releases/latest) 下载完整应用与 CLI。解压后执行 `sudo ./bin/macfanpro install`，迁移 ThermalForgePro 时加上 `--migrate-thermalforgepro`，迁移 ThermalForge 时加上 `--migrate-thermalforge`。
+也可在 [Releases](https://github.com/macfanpro/macfanpro/releases/latest) 下载完整应用与 CLI。解压后执行 `sudo ./bin/macfanpro install`，然后打开 `/Applications/MacFanPro.app`。
 
-当前发行包使用 ad-hoc 签名，尚未进行 Apple 公证；Homebrew 安装会在本机从源码构建。[0.2.3.14 验证记录](docs/macfanpro-0.2.3.14-validation.md) 列出了已完成的测试和验证范围。
+当前发行包使用 ad-hoc 签名，尚未进行 Apple 公证；Homebrew 安装会在本机从源码构建。[0.2.3.15 验证记录](docs/macfanpro-0.2.3.15-validation.md) 列出了已完成的测试和验证范围。
 
 开发验证：`bash Scripts/test.sh`、`swift build -c release`、`bash Scripts/check-localization-package.sh`。语言资源维护见 [GUI localization](docs/gui-localization.md)。`docs/upstream/` 与早期验收文档保留历史记录，不代表当前发行版或所有机型的测试结论。

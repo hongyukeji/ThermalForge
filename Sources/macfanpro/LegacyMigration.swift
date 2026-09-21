@@ -5,7 +5,11 @@ import MacFanProCore
 /// A first-install migration. Old binaries stay in a root-owned backup and are
 /// restored if the new installer fails. User data is copied, never removed.
 final class LegacyMigration {
-    private let legacy: LegacyInstallation
+    private static let oldLabel = "com.thermalforge.daemon"
+    private static let oldApp = "/Applications/ThermalForge.app"
+    private static let oldBinary = "/usr/local/bin/thermalforge"
+    private static let oldPlist = "/Library/LaunchDaemons/com.thermalforge.daemon.plist"
+    private static let oldSocket = "/var/run/thermalforge.sock"
     private let fm = FileManager.default
     private let uid: Int
     private let backup: URL
@@ -14,59 +18,55 @@ final class LegacyMigration {
     private var finished = false
     let appWasRunning: Bool
 
-    static var presentInstallations: [LegacyInstallation] {
-        LegacyInstallation.allCases.filter { legacy in
-            [legacy.appPath, legacy.binaryPath, legacy.plistPath].contains {
-                FileManager.default.fileExists(atPath: $0)
-            } || registered(legacy.daemonLabel)
-        }
+    static var isPresent: Bool {
+        [oldApp, oldBinary, oldPlist].contains { FileManager.default.fileExists(atPath: $0) }
+            || registered(oldLabel)
     }
 
     static func registered(_ label: String) -> Bool {
         (try? run("/bin/launchctl", ["print", "system/\(label)"]).status) == 0
     }
 
-    init(ownerUID: Int, legacy: LegacyInstallation) throws {
-        self.legacy = legacy
+    init(ownerUID: Int) throws {
         uid = ownerUID
         guard !MacFanProDaemon.isRegisteredWithLaunchd,
               !fm.fileExists(atPath: "/Applications/MacFanPro.app") else {
-            throw ValidationError("MacFanPro is already installed. Remove the older \(legacy.name) installation separately before retrying migration.")
+            throw ValidationError("MacFanPro is already installed. Remove the older ThermalForge installation separately before retrying migration.")
         }
-        appWasRunning = (try Self.run("/usr/bin/pgrep", ["-x", "-u", "\(uid)", legacy.executableName]).status) == 0
+        appWasRunning = (try Self.run("/usr/bin/pgrep", ["-x", "-u", "\(uid)", "ThermalForgeApp"]).status) == 0
         backup = URL(fileURLWithPath: "/Library/Application Support/MacFanPro/Migrations")
             .appendingPathComponent(UUID().uuidString)
         try fm.createDirectory(at: backup, withIntermediateDirectories: true,
                                attributes: [.posixPermissions: 0o700])
-        for path in [legacy.appPath, legacy.binaryPath, legacy.plistPath] where fm.fileExists(atPath: path) {
+        for path in [Self.oldApp, Self.oldBinary, Self.oldPlist] where fm.fileExists(atPath: path) {
             let destination = backup.appendingPathComponent(URL(fileURLWithPath: path).lastPathComponent)
             try fm.copyItem(atPath: path, toPath: destination.path)
             saved.append((path, destination))
         }
-        print("\(legacy.name) migration backup: \(backup.path)")
+        print("ThermalForge migration backup: \(backup.path)")
     }
 
     func prepare() throws {
         do {
             try migrateUserData()
             changedRuntime = true
-            _ = try Self.run("/usr/bin/pkill", ["-x", "-u", "\(uid)", legacy.executableName])
+            _ = try Self.run("/usr/bin/pkill", ["-x", "-u", "\(uid)", "ThermalForgeApp"])
             Thread.sleep(forTimeInterval: 0.5)
-            guard try Self.run("/usr/bin/pgrep", ["-x", "-u", "\(uid)", legacy.executableName]).status != 0 else {
-                throw ValidationError("\(legacy.name) is still running; quit it before migrating.")
+            guard try Self.run("/usr/bin/pgrep", ["-x", "-u", "\(uid)", "ThermalForgeApp"]).status != 0 else {
+                throw ValidationError("ThermalForge is still running; quit it before migrating.")
             }
             // The new core contains the checked release path. Do not run a
             // potentially user-replaced legacy executable with root privileges.
             try FanControl().resetAuto()
-            if Self.registered(legacy.daemonLabel) {
-                try Self.require("/bin/launchctl", ["bootout", "system/\(legacy.daemonLabel)"])
+            if Self.registered(Self.oldLabel) {
+                try Self.require("/bin/launchctl", ["bootout", "system/\(Self.oldLabel)"])
             }
-            guard !Self.registered(legacy.daemonLabel) else {
-                throw ValidationError("The old \(legacy.name) daemon did not stop.")
+            guard !Self.registered(Self.oldLabel) else {
+                throw ValidationError("The old ThermalForge daemon did not stop.")
             }
             for (path, _) in saved { try fm.removeItem(atPath: path) }
-            unlink(legacy.socketPath)
-            unlink("/tmp/\(legacy.command).sock")
+            unlink(Self.oldSocket)
+            unlink("/tmp/thermalforge.sock")
         } catch {
             rollback()
             throw error
@@ -75,8 +75,8 @@ final class LegacyMigration {
 
     func complete() {
         finished = true
-        print("\(legacy.name) was replaced. Previous files remain at \(backup.path).")
-        print("Remove its old Homebrew package with: brew uninstall \(legacy.command)")
+        print("ThermalForge was replaced. Previous files remain at \(backup.path).")
+        print("Remove its old Homebrew package with: brew uninstall thermalforge")
     }
 
     func rollback() {
@@ -95,13 +95,13 @@ final class LegacyMigration {
                 if fm.fileExists(atPath: path) { try fm.removeItem(atPath: path) }
                 try fm.copyItem(atPath: copy.path, toPath: path)
             }
-            if fm.fileExists(atPath: legacy.plistPath), !Self.registered(legacy.daemonLabel) {
-                try Self.require("/bin/launchctl", ["bootstrap", "system", legacy.plistPath])
+            if fm.fileExists(atPath: Self.oldPlist), !Self.registered(Self.oldLabel) {
+                try Self.require("/bin/launchctl", ["bootstrap", "system", Self.oldPlist])
             }
             if appWasRunning {
-                _ = try Self.run("/bin/launchctl", ["asuser", "\(uid)", "/usr/bin/open", legacy.appPath])
+                _ = try Self.run("/bin/launchctl", ["asuser", "\(uid)", "/usr/bin/open", Self.oldApp])
             }
-            print("Installation failed; the previous \(legacy.name) runtime was restored.")
+            print("Installation failed; the previous ThermalForge runtime was restored.")
         } catch {
             FileHandle.standardError.write(Data("Rollback needs attention: \(error). Backup: \(backup.path)\n".utf8))
         }
@@ -112,7 +112,7 @@ final class LegacyMigration {
             throw ValidationError("Cannot resolve the controlling user's home directory.")
         }
         let home = URL(fileURLWithPath: String(cString: homePointer))
-        let oldSupport = home.appendingPathComponent("Library/Application Support/\(legacy.name)")
+        let oldSupport = home.appendingPathComponent("Library/Application Support/ThermalForge")
         let newSupport = home.appendingPathComponent("Library/Application Support/MacFanPro")
         try asUser("/bin/mkdir", ["-p", newSupport.path])
         for name in ["calibration.json", "profiles", "logs"] {
@@ -124,7 +124,7 @@ final class LegacyMigration {
         }
         // Copy presentation preferences only; cached upstream update URLs must
         // never carry over into the independent release channel.
-        let old = try Self.run("/usr/bin/sudo", ["-u", "#\(uid)", "/usr/bin/defaults", "export", legacy.bundleIdentifier, "-"])
+        let old = try Self.run("/usr/bin/sudo", ["-u", "#\(uid)", "/usr/bin/defaults", "export", "com.thermalforge.app", "-"])
         guard old.status == 0,
               let oldValues = try PropertyListSerialization.propertyList(from: old.data, format: nil) as? [String: Any] else { return }
         let newDomain = "io.github.macfanpro.app"

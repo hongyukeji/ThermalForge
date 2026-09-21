@@ -628,9 +628,6 @@ struct Install: ParsableCommand {
     @Flag(name: .long, help: "Back up and replace an existing ThermalForge installation")
     var migrateThermalforge = false
 
-    @Flag(name: .long, help: "Back up and replace an existing ThermalForgePro installation")
-    var migrateThermalforgepro = false
-
     func run() throws {
         guard geteuid() == 0 else {
             throw ValidationError("Run with sudo: sudo macfanpro install")
@@ -670,14 +667,14 @@ struct Install: ParsableCommand {
             throw ValidationError("No matching MacFanPro.app was found. Install with Homebrew or run ./setup.sh before installing the daemon.")
         }
 
-        guard !(migrateThermalforge && migrateThermalforgepro) else {
-            throw ValidationError("Choose only one legacy installation to migrate.")
-        }
-        let requested: LegacyInstallation? = migrateThermalforgepro ? .thermalForgePro
-            : (migrateThermalforge ? .thermalForge : nil)
-        let legacy = try LegacyInstallation.select(from: LegacyMigration.presentInstallations, requested: requested)
-        let migration = try legacy.map { try LegacyMigration(ownerUID: ownerUID, legacy: $0) }
-        try migration?.prepare()
+        let migration: LegacyMigration?
+        if LegacyMigration.isPresent {
+            guard migrateThermalforge else {
+                throw ValidationError("ThermalForge is installed. To replace it, run: sudo macfanpro install --migrate-thermalforge")
+            }
+            migration = try LegacyMigration(ownerUID: ownerUID)
+            try migration?.prepare()
+        } else { migration = nil }
         defer { migration?.rollback() }
 
         // Non-destructively capture whether the controlling user's app is running
