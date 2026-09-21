@@ -1,3 +1,15 @@
+# MacFanPro changelog
+
+## 0.2.3.14
+
+- Rename ThermalForgePro to MacFanPro, including the app, CLI, daemon, resources, data directories and update channel.
+- Move development and releases to `macfanpro/macfanpro`; distribute Homebrew packages through `macfanpro/tap`.
+- Add an explicit `install --migrate-thermalforgepro` path that backs up the old runtime, copies durable settings and restores the previous runtime if installation fails. Retain ThermalForge migration support.
+- Preserve the native menu, automatic panel height, centered minimum-width temperature label and localized Quit footer.
+- Refresh the README with a screenshot of the installed MacFanPro app.
+
+Earlier entries below describe releases under their original product name.
+
 # Changelog
 
 ## 0.2.3.13

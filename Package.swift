@@ -3,41 +3,41 @@
 import PackageDescription
 
 let package = Package(
-    name: "ThermalForgePro",
+    name: "MacFanPro",
     platforms: [.macOS(.v14)],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.3.0"),
     ],
     targets: [
         .target(
-            name: "ThermalForgeProLocalization",
+            name: "MacFanProLocalization",
             resources: [.process("Resources")]
         ),
         .target(
-            name: "ThermalForgeProCore",
-            path: "Sources/ThermalForgeProCore",
+            name: "MacFanProCore",
+            path: "Sources/MacFanProCore",
             linkerSettings: [
                 .linkedFramework("Metal"),
             ]
         ),
         .executableTarget(
-            name: "thermalforgepro",
+            name: "macfanpro",
             dependencies: [
-                "ThermalForgeProCore",
-                "ThermalForgeProLocalization",
+                "MacFanProCore",
+                "MacFanProLocalization",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ],
-            path: "Sources/thermalforgepro"
+            path: "Sources/macfanpro"
         ),
         .executableTarget(
-            name: "ThermalForgeProApp",
-            dependencies: ["ThermalForgeProCore", "ThermalForgeProLocalization"],
-            path: "Sources/ThermalForgeProApp"
+            name: "MacFanProApp",
+            dependencies: ["MacFanProCore", "MacFanProLocalization"],
+            path: "Sources/MacFanProApp"
         ),
         .testTarget(
-            name: "ThermalForgeProTests",
-            dependencies: ["ThermalForgeProCore", "ThermalForgeProApp", "ThermalForgeProLocalization"],
-            path: "Tests/ThermalForgeProTests"
+            name: "MacFanProTests",
+            dependencies: ["MacFanProCore", "MacFanProApp", "MacFanProLocalization"],
+            path: "Tests/MacFanProTests"
         ),
     ]
 )
