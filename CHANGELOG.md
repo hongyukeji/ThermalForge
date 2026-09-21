@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.2.3.11
+
+- Bound runtime logs to 5 MiB per file and 50 MiB per process user's log
+  directory, retaining at most seven calendar days. Clean at startup, during
+  writes and hourly while running, including an idle daemon.
+- Move runtime file I/O off control callers into a bounded background queue.
+  Back off on write errors and tolerate full or read-only storage.
+- Mark temporary captures at creation and protect live recordings with a
+  process lease. Ctrl-C and SIGTERM finalize metadata and extend expiry to
+  24 hours after completion; abandoned captures can also be reclaimed.
+- Stop temporary recordings at 100 MiB of CSV data. Explicit `--output` and
+  `--no-expire` recordings remain permanent and uncapped. Preserve unmarked
+  legacy recordings and unrelated files.
+- Add 12 isolated logging regressions. Fan curves, safety behavior, release
+  comparison, menu layout and translations are unchanged.
+
 ## 0.2.3.10
 
 - Remove hardcoded release-order exceptions for the retired 0.3.x versions.
