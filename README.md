@@ -99,6 +99,6 @@ cd ThermalForgePro
 
 也可在 [Releases](https://github.com/hongyukeji/ThermalForgePro/releases/latest) 下载完整应用与 CLI。解压后执行 `sudo ./bin/thermalforgepro install`，迁移旧版时加上 `--migrate-thermalforge`。
 
-当前发行包使用 ad-hoc 签名，尚未进行 Apple 公证；Homebrew 安装会在本机从源码构建。[0.2.3.10 验证记录](docs/thermalforgepro-0.2.3.10-validation.md) 列出了已完成的测试和验证范围。
+当前发行包使用 ad-hoc 签名，尚未进行 Apple 公证；Homebrew 安装会在本机从源码构建。[0.2.3.11 验证记录](docs/thermalforgepro-0.2.3.11-validation.md) 列出了已完成的测试和验证范围。
 
 开发验证：`bash Scripts/test.sh`、`swift build -c release`、`bash Scripts/check-localization-package.sh`。语言资源维护见 [GUI localization](docs/gui-localization.md)。`docs/upstream/` 与早期验收文档保留历史记录，不代表当前发行版或所有机型的测试结论。
