@@ -12,6 +12,10 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
+      - name: Check release notes
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: test -s "docs/releases/${RELEASE_TAG#v}.md"
       - name: Test Debug
         run: bash Scripts/test.sh
       - name: Test Release
@@ -27,4 +31,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ github.ref_name }}
         # Publish only after the downloaded artifact has passed local acceptance.
-        run: gh release create "$RELEASE_TAG" dist/*.tar.gz dist/SHA256SUMS --verify-tag --draft --title "MacFanPro $RELEASE_TAG" --notes-file CHANGELOG.md
+        run: gh release create "$RELEASE_TAG" dist/*.tar.gz dist/SHA256SUMS --verify-tag --draft --title "MacFanPro ${RELEASE_TAG#v}" --notes-file "docs/releases/${RELEASE_TAG#v}.md"
