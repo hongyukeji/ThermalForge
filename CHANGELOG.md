@@ -2,9 +2,10 @@
 
 ## 0.2.3.13
 
-- Separate Quit ThermalForgePro from the preference controls with a full-width
+- Separate Quit from the preference controls with a full-width
   divider and equal 6 pt spacing above and below it. Preserve automatic popup
   height, menu interactions and the centered temperature label.
+- Shorten the footer action to Quit in English and 退出 in both Chinese variants.
 
 ## 0.2.3.12
 

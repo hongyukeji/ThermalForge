@@ -14,7 +14,7 @@
   "{temperature}°{unit} instant": "{temperature}°{unit} instant",
   "Default": "Default",
   "Launch at Login": "Launch at Login",
-  "Quit ThermalForgePro": "Quit ThermalForgePro",
+  "Quit": "Quit",
   "SAFETY": "SAFETY",
   "Idle": "Idle",
   "Fans held from Terminal": "Fans held from Terminal",

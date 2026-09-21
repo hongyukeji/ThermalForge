@@ -193,7 +193,7 @@ struct MenuBarView: View {
             Divider().padding(.vertical, 6)
 
             Button(action: { NSApp.terminate(nil) }) {
-                Text(language.text("Quit ThermalForgePro"))
+                Text(language.text("Quit"))
             }
             .buttonStyle(.plain)
             .foregroundStyle(.secondary)

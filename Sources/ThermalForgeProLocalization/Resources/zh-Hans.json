@@ -14,7 +14,7 @@
   "{temperature}°{unit} instant": "{temperature}°{unit} 即时触发",
   "Default": "默认",
   "Launch at Login": "登录时启动",
-  "Quit ThermalForgePro": "退出 ThermalForgePro",
+  "Quit": "退出",
   "SAFETY": "安全保护",
   "Idle": "空闲",
   "Fans held from Terminal": "风扇由终端接管",
