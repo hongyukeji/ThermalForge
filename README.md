@@ -41,22 +41,6 @@ open /Applications/MacFanPro.app
 
 也可以用完整名称首次安装：`brew install macfanpro/tap/macfanpro`。Homebrew 管理下载和构建，`sudo macfanpro install` 将后台程序复制到 root 所有的路径、注册服务并安装菜单栏应用。应用与普通控制命令之后无需 sudo。需要开机启动时，在应用中开启“登录时启动”。
 
-## 从 ThermalForgePro 迁移
-
-先关闭旧应用的“登录时启动”，再运行。先卸载旧 Homebrew 包不会删除独立安装在 `/Applications` 和 `/usr/local/bin` 的运行程序，后续迁移命令会负责停止和替换它们；未使用 Homebrew 安装旧版时，跳过第一行：
-
-```bash
-brew uninstall thermalforgepro
-brew tap macfanpro/tap
-brew install macfanpro/tap/macfanpro
-sudo "$(brew --prefix macfanpro/tap/macfanpro)/bin/macfanpro" install --migrate-thermalforgepro
-open /Applications/MacFanPro.app
-```
-
-迁移会先备份并停止旧应用和后台服务，复制语言、温度单位、温控模式、校准、用户模式及采样日志，然后安装 MacFanPro。已有 MacFanPro 配置优先；旧更新缓存不会迁入新渠道。失败时尝试恢复旧运行程序。确认新版正常后，可移除旧数据和终端显示的备份；新应用的“登录时启动”需重新开启。
-
-若原 `hongyukeji/tap` 已自动将旧包重命名为 `macfanpro`，先用 `brew list --formula --full-name` 确认所属源，并将第一行换成 `brew uninstall hongyukeji/tap/macfanpro`，再安装新源的配方。只保留一个源中的 `macfanpro` 配方。原源仅有本软件且已无安装包时，可用 `brew untap hongyukeji/tap` 移除。
-
 ## 从 ThermalForge 迁移
 
 先关闭旧应用的“登录时启动”，然后运行：
