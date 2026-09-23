@@ -342,6 +342,7 @@ public final class FanControl {
             return nil
         }
         guard temp > 0, temp < 150 else { return nil }
+        guard SMCSensorFilter.accepts(key, temp) else { return nil }
         return (temp * 10).rounded() / 10
     }
 
