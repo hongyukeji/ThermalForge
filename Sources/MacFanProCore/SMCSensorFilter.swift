@@ -13,8 +13,8 @@ import Foundation
 
 enum SMCSensorFilter {
 
-    /// Prefixes upstream treats as CPU/GPU die sensors.
-    private static let dieSensorPrefixes = ["TC", "Tp", "TG", "Tg"]
+    /// CPU/GPU die sensor prefixes (upstream's four plus the `Te*` efficiency cores).
+    private static let dieSensorPrefixes = ["TC", "Tp", "Te", "TG", "Tg"]
 
     /// A die sensor on a running Mac cannot sit below this. The `Tp*` keys
     /// intermittently hold placeholder values (1.5, 1.9 and 5.2 observed on

@@ -352,12 +352,8 @@ final class AppState: ObservableObject {
                 self?.latestStatus = status
                 self?.activeProfile = profile
                 self?.monitorState = state
-                // Max of only the displayed sensors
-                // Peak across all CPU and GPU sensors for menu bar display
-                let displayPrefixes = ["TC", "Tp", "TG", "Tg"]
-                self?.maxTemp = status.temperatures
-                    .filter { key, _ in displayPrefixes.contains(where: { key.hasPrefix($0) }) }
-                    .values.max()
+                // Max of only the displayed sensors (CPU and GPU rows)
+                self?.maxTemp = status.displayedPeakTemp
             }
         }
         monitor.onFanCommand = { [weak self] command in

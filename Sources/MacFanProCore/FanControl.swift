@@ -304,6 +304,8 @@ public final class FanControl {
         "Tp01", "Tp02", "Tp03", "Tp04", "Tp05", "Tp06", "Tp07", "Tp08",
         "Tp09", "Tp0A", "Tp0B", "Tp0C", "Tp0D", "Tp0F", "Tp0G", "Tp0H",
         "Tp0J", "Tp0L", "Tp0P", "Tp0S", "Tp0T", "Tp0W", "Tp0X", "Tp0b",
+        // CPU — M4 generation per-core keys not listed above (Stats' M4 map)
+        "Tp0V", "Tp0Y", "Tp0e", "Te05", "Te0S", "Te09", "Te0H",
         // GPU (flt — M1-M4, and ioft 8-byte — M5 Max)
         "Tg05", "Tg0D", "Tg0L", "Tg0T", "Tg0f", "Tg0j",
         "TG0B", "TG0H", "TG0V",

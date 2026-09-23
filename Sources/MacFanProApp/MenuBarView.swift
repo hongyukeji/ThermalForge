@@ -79,7 +79,7 @@ struct MenuBarView: View {
 
                 // Temperatures
                 SectionHeader(title: language.text("TEMPERATURES"))
-                TemperatureRow(label: language.text("CPU"), value: peakTemp(prefixes: ["TC", "Tp"]), fahrenheit: appState.useFahrenheit)
+                TemperatureRow(label: language.text("CPU"), value: appState.latestStatus?.displayedCPUTemp, fahrenheit: appState.useFahrenheit)
                 TemperatureRow(label: language.text("GPU"), value: peakTemp(prefixes: ["TG", "Tg"]), fahrenheit: appState.useFahrenheit)
                 TemperatureRow(label: language.text("RAM"), value: peakTemp(prefixes: ["TR", "Tm", "TM"]), fahrenheit: appState.useFahrenheit)
                 TemperatureRow(label: language.text("SSD"), value: peakTemp(prefixes: ["TH"]), fahrenheit: appState.useFahrenheit)
