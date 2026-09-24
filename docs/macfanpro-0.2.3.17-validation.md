@@ -14,3 +14,11 @@
 - 新增回归测试覆盖"旧版本已把目录写到接近总量上限"的升级场景；将预留逻辑改坏后该测试失败，恢复后通过。
 - Debug、Release 各 116 项测试通过；各配置 108 次断连检查通过；语言资源打包检查通过。
 - 卸载清理：以单元测试验证 root 日志目录解析为 `/var/root/Library/Logs/MacFanPro`。未在本机实际执行卸载。
+
+## 公开发行
+
+- 发行源提交：`e1c12c4`，标签 `v0.2.3.17`。[源码 CI](https://github.com/macfanpro/macfanpro/actions/runs/35973264018)、[发行 CI](https://github.com/macfanpro/macfanpro/actions/runs/35973264617) 通过。
+- 下载草稿附件，`SHA256SUMS` 校验通过，与 GitHub asset digest 一致：`MacFanPro-0.2.3.17-macos-arm64.tar.gz` 为 `8e2baf9ea3264c40b2761050660caee42cbae2dfddea77c024dee0e2c3022ebd`。CLI 与应用版本为 0.2.3.17，严格代码签名校验通过，`uninstall --help` 显示新的 `--purge-data` 说明。
+- 以先退出应用、同步后台、再打开的步骤安装下载产物；已安装的后台服务 CLI 与应用二进制与发行包逐字节一致，后台服务运行中。
+- 实机对比：用 CLI 连续 10 秒交替下发 3000/3200 RPM，同时对后台服务采样 12 秒。0.2.3.16 写 64 行日志时，调用栈中日志代码最多约 231 个样本；0.2.3.17 写 76 行时约 11 个样本。日志内容与轮转文件正常。
+
