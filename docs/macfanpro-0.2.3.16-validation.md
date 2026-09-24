@@ -41,3 +41,4 @@
 - 本机 Homebrew 7.0.6 拒绝加载未受信任 tap 的配方，需先执行 `brew trust macfanpro/tap`；README 与 tap 说明已补充这一步。
 
 - 执行 `brew trust macfanpro/tap` 后，Homebrew 从 0.2.3.15 正常升级到 0.2.3.16，`brew test` 通过，旧版本已从 Cellar 清理。按先退出应用、同步后台、再打开的步骤安装后，后台服务 CLI、应用与 Homebrew 版逐字节一致，版本均为 0.2.3.16；当日日志 0 条 ERROR。
+- README 的英文与简体中文截图来自本机实际运行的 0.2.3.16 菜单面板（按窗口截取，520×912 像素，即 260×456 pt 的 2 倍图）。
