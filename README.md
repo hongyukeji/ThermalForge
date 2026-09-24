@@ -222,6 +222,10 @@ brew uninstall macfanpro
 
 不同机型提供的传感器、风扇数量及转速范围可能不同。提交问题时，请附上机型、macOS 版本、MacFanPro 版本、安装方式、复现步骤，以及相关状态输出或日志片段。问题反馈入口：[Issues](https://github.com/macfanpro/macfanpro/issues)。
 
+### 温度与 Stats 等工具不一致
+
+MacFanPro 的 CPU、GPU 行显示对应传感器中的**最高值**，可与 Stats 的“Hottest CPU / Hottest GPU”对照，不要与“Average”对照。在 M4 系列上，CPU 行使用与 Stats 相同的核心传感器；其他芯片按传感器前缀分组，可能与其他工具的选择不同。风扇控制和 95°C 安全阈值跟随芯片最热点（包括不在 CPU 行显示的热点传感器），因此风扇可能在 CPU、GPU 行都未到阈值时开始提速。对照方法与实测数据见 [传感器校准记录](docs/thermal-sensor-calibration-20260924.md)。
+
 ## 开发与贡献
 
 ### 项目结构
@@ -263,6 +267,8 @@ bash Scripts/package-release.sh
 - [更新记录](CHANGELOG.md)：已发行版本的主要变化。
 - [发布说明规范与模板](docs/releases/README.md)：按版本维护发布说明、下载入口、升级提示和验证依据。
 - [0.2.3.15 验证记录](docs/macfanpro-0.2.3.15-validation.md)：发行产物、本机运行和未覆盖环境。
+- [0.2.3.16 验证记录](docs/macfanpro-0.2.3.16-validation.md)：温度传感器修正与 Stats 对照（本机候选版，尚未发行）。
+- [相对上游的温度改动](docs/upstream-divergence.md)：合并上游时需要重新施加的改动。
 - [GUI 本地化](docs/gui-localization.md)：英语键名、简体翻译、繁体字形转换及资源校验流程。
 - [菜单栏标签验证](docs/menu-bar-label-validation.md)：最小宽度、位数变化和隔离显示测试。
 - [M4 风扇接管修复](docs/m4-handoff-repair.md)：相关硬件行为与修复依据。

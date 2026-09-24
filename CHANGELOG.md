@@ -1,5 +1,13 @@
 # MacFanPro changelog
 
+## 0.2.3.16
+
+- Show the hottest CPU core in the CPU row. On M4 the row also picked up SoC hotspot keys (`TCDX`, `TCMb`) and per-core keys that are not the core temperature (`Tp02`, `Tp06`, `Tp0A`), so under GPU load it read 73–75°C while every CPU core read 60–63°C. It now uses the per-core keys Stats maps for the M4 generation; under GPU load MacFanPro and Stats now agree within 0.5°C. Other chips keep the previous grouping.
+- The menu bar reading is now the hotter of the CPU and GPU rows, so it always matches the panel.
+- Stop reporting the battery gas-gauge sensors as GPU temperatures. On M4 Max the SMC keys `TG0B`, `TG0H` and `TG0V` are battery sensors; MacFanPro asks the system's thermal sensor services which keys are batteries and leaves them out.
+- Drop placeholder readings (below 10°C) from CPU/GPU die keys in `macfanpro status` and recorded logs.
+- Fan control and the 95°C safety floor are unchanged: they still follow the hottest point on the chip, including the hotspot keys.
+
 ## 0.2.3.15
 
 - Simplify installation by removing the retired product's migration flag and product-selection layer.
