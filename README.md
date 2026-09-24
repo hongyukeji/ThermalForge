@@ -8,7 +8,7 @@
 
 MacFanPro 基于 [ThermalForge](https://github.com/ProducerGuy/ThermalForge) 独立维护，使用自己的版本、安装名称和更新渠道，并非上游官方发行版。
 
-[安装](#安装) · [使用](#使用) · [更新](#更新) · [卸载](#卸载) · [日志与数据](#日志与数据) · [常见问题](#常见问题) · [开发与贡献](#开发与贡献)
+[安装](#安装) · [使用](#使用) · [更新](#更新) · [卸载](#卸载) · [日志与数据](#日志与数据) · [常见问题](#常见问题) · [开发与贡献](#开发与贡献) · [贡献者](#贡献者)
 
 ## 功能与界面
 
@@ -18,7 +18,7 @@ MacFanPro 基于 [ThermalForge](https://github.com/ProducerGuy/ThermalForge) 独
 - **语言与显示设置**：支持英语、简体中文、繁体中文、跟随系统、摄氏/华氏切换及登录时启动。
 - **命令行与后台服务**：支持指定转速、读取状态和 CSV 数据采样；正常安装后，应用和普通控制命令通过后台服务操作风扇。
 
-下面是本机运行 MacFanPro 0.2.3.16 的真实截图，依次为英文和简体中文界面：
+下面是本机运行 MacFanPro 0.2.3.19 的真实截图，依次为英文和简体中文界面：
 
 <img src="docs/images/menu-bar-en.png" alt="MacFanPro menu in English: fan speeds, temperatures, profiles, language setting and Quit" width="320"> <img src="docs/images/menu-bar-zh-CN.png" alt="MacFanPro 菜单（简体中文）：风扇转速、温度、控制模式、语言设置与退出按钮" width="320">
 
@@ -287,6 +287,14 @@ bash Scripts/package-release.sh
 
 版本号采用 **上游版本号 + 第四段修订号**，由 [`Version.swift`](Sources/MacFanProCore/Version.swift) 定义。例如 `0.2.3.15` 基于上游 `0.2.3`；只有实际合入新的上游版本后才更新前三段。应用和 CLI 按各段数字比较版本，缺省段视为 0，不为特定旧版添加比较例外。
 
+## 贡献者
+
+<a href="https://github.com/hongyukeji"><img src="https://github.com/hongyukeji.png?size=100" width="50" height="50" alt="hongyukeji"></a>
+
+- [@hongyukeji](https://github.com/hongyukeji)：MacFanPro 维护者
+
+欢迎通过 [Issues](https://github.com/macfanpro/macfanpro/issues) 反馈问题或提交兼容性报告。
+
 ## 来源与许可
 
-MacFanPro 由 hongyukeji 维护，遵循 [MIT License](LICENSE)。项目完整保留 ThermalForge 上游版权与许可，衍生关系及第三方依赖说明见 [NOTICE.md](NOTICE.md) 和 [ThirdPartyNotices/](ThirdPartyNotices/)。
+MacFanPro 由 [@hongyukeji](https://github.com/hongyukeji) 维护，遵循 [MIT License](LICENSE)。项目完整保留 ThermalForge 上游版权与许可，衍生关系及第三方依赖说明见 [NOTICE.md](NOTICE.md) 和 [ThirdPartyNotices/](ThirdPartyNotices/)。
