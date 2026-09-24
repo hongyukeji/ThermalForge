@@ -37,6 +37,7 @@
   "Restart daemon": "Restart daemon",
   "Asks for your password once. If it doesn't come back right away, it will keep retrying on its own.": "Asks for your password once. If it doesn't come back right away, it will keep retrying on its own.",
   "Language": "Language",
+  "Version": "Version",
   "Follow System": "Follow System",
   "Temperature unavailable": "Temperature unavailable",
   "MacFanPro: {reading}": "MacFanPro: {reading}",

@@ -170,6 +170,17 @@ struct MenuBarView: View {
 
             Divider().padding(.vertical, 4)
 
+            // Footer
+            Toggle(language.text("°F / °C"), isOn: $appState.useFahrenheit)
+                .padding(.horizontal, 12)
+                .padding(.top, 4)
+                .padding(.bottom, 6)
+            Toggle(language.text("Launch at Login"), isOn: $appState.launchAtLogin)
+                .padding(.horizontal, 12)
+
+            Divider().padding(.vertical, 6)
+
+            // MacFanPro-only section (not in upstream): language and the running version.
             // Language changes update presentation only; AppState stays alive.
             Picker(language.text("Language"), selection: Binding(
                 get: { language.selection }, set: { language.select($0) }
@@ -180,15 +191,18 @@ struct MenuBarView: View {
             }
             .accessibilityIdentifier("io.github.macfanpro.language")
             .padding(.horizontal, 12)
-            .padding(.top, 4)
             .padding(.bottom, 6)
-
-            // Footer
-            Toggle(language.text("°F / °C"), isOn: $appState.useFahrenheit)
-                .padding(.horizontal, 12)
-                .padding(.bottom, 6)
-            Toggle(language.text("Launch at Login"), isOn: $appState.launchAtLogin)
-                .padding(.horizontal, 12)
+            HStack {
+                Text(language.text("Version"))
+                Spacer()
+                Text(MacFanProVersion.current)
+                    .font(.system(.body, design: .monospaced))
+                    .foregroundStyle(.secondary)
+                    .textSelection(.enabled)
+            }
+            .accessibilityElement(children: .combine)
+            .accessibilityIdentifier("io.github.macfanpro.version")
+            .padding(.horizontal, 12)
 
             Divider().padding(.vertical, 6)
 

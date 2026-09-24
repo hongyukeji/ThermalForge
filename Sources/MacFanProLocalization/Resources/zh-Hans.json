@@ -37,6 +37,7 @@
   "Restart daemon": "重启后台服务",
   "Asks for your password once. If it doesn't come back right away, it will keep retrying on its own.": "需要一次管理员授权。如果没有立即恢复，应用会继续自动重试。",
   "Language": "语言",
+  "Version": "版本",
   "Follow System": "跟随系统",
   "Temperature unavailable": "温度不可用",
   "MacFanPro: {reading}": "MacFanPro：{reading}",
