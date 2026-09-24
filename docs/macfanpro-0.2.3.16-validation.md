@@ -40,3 +40,4 @@
 - 以先退出应用、同步后台、再打开的步骤安装下载产物；已安装的 CLI 与应用二进制与发行包逐字节一致。通过 CLI/daemon 将两只风扇设为 2000 RPM，实测到位后恢复 Apple 自动控制，重新打开应用；当日日志 0 条 ERROR。
 - 本机 Homebrew 7.0.6 拒绝加载未受信任 tap 的配方，需先执行 `brew trust macfanpro/tap`；README 与 tap 说明已补充这一步。
 
+- 执行 `brew trust macfanpro/tap` 后，Homebrew 从 0.2.3.15 正常升级到 0.2.3.16，`brew test` 通过，旧版本已从 Cellar 清理。按先退出应用、同步后台、再打开的步骤安装后，后台服务 CLI、应用与 Homebrew 版逐字节一致，版本均为 0.2.3.16；当日日志 0 条 ERROR。
