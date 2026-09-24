@@ -289,11 +289,18 @@ bash Scripts/package-release.sh
 
 ## 贡献者
 
-<a href="https://github.com/hongyukeji"><img src="https://github.com/hongyukeji.png?size=100" width="50" height="50" alt="hongyukeji"></a>
+感谢每一位为 MacFanPro 做出贡献的人：
 
-- [@hongyukeji](https://github.com/hongyukeji)：MacFanPro 维护者
+<table>
+  <tr>
+    <td align="center" valign="top" width="120">
+      <a href="https://github.com/hongyukeji"><img src="https://github.com/hongyukeji.png?size=200" width="80" alt="hongyukeji"><br><sub><b>hongyukeji</b></sub></a><br>
+      <sub>维护者</sub>
+    </td>
+  </tr>
+</table>
 
-欢迎通过 [Issues](https://github.com/macfanpro/macfanpro/issues) 反馈问题或提交兼容性报告。
+完整名单见 [Contributors](https://github.com/macfanpro/macfanpro/graphs/contributors)。欢迎通过 [Issues](https://github.com/macfanpro/macfanpro/issues) 反馈问题或提交兼容性报告。
 
 ## 来源与许可
 
