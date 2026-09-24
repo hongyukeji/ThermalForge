@@ -176,7 +176,7 @@ git pull --ff-only
 sudo macfanpro uninstall
 ```
 
-如需同时删除当前用户的模式文件、校准数据、采样记录和运行日志，请**改用**：
+如需同时删除当前用户的模式文件、校准数据、采样记录和运行日志，以及后台服务的运行日志，请**改用**：
 
 ```bash
 sudo macfanpro uninstall --purge-data
@@ -188,7 +188,7 @@ sudo macfanpro uninstall --purge-data
 brew uninstall macfanpro
 ```
 
-`--purge-data` 清理当前用户的 `~/Library/Application Support/MacFanPro/` 和 `~/Library/Logs/MacFanPro/`；不会删除自定义导出目录、root 用户的日志目录或单独保存的界面偏好。仅拖走 App 或仅运行 `brew uninstall` 不会完成后台服务卸载。
+`--purge-data` 清理当前用户的 `~/Library/Application Support/MacFanPro/`、`~/Library/Logs/MacFanPro/`，以及后台服务的 `/var/root/Library/Logs/MacFanPro/`；不会删除自定义导出目录或单独保存的界面偏好。仅拖走 App 或仅运行 `brew uninstall` 不会完成后台服务卸载。
 
 ## 日志与数据
 
@@ -201,9 +201,15 @@ brew uninstall macfanpro
 | 临时 CSV 采样 | `~/Library/Application Support/MacFanPro/logs/` | 每次采样的 CSV 最多 100 MiB，正常结束后保留 24 小时 |
 | 模式与校准数据 | `~/Library/Application Support/MacFanPro/` | 不会按日志策略自动清理 |
 
-运行日志在启动、写入及运行期间每小时清理；两处受管理的运行日志默认容量合计最多 100 MiB。磁盘写入失败时会暂停文件日志并稍后重试，待写队列有容量限制。
+运行日志在启动、开始写入新文件（达到单文件上限或跨日）及运行期间每小时清理；两处受管理的运行日志默认容量合计最多 100 MiB。磁盘写入失败时会暂停文件日志并稍后重试，待写队列有容量限制。
 
-临时采样达到容量上限时停止并保留已有数据。正常结束、Ctrl-C 或 SIGTERM 后更新到期时间；异常退出也会留下可清理标记。应用启动、运行期间每小时及下一次采样启动时，会清理已到期且不再写入的采样目录。应用未运行时，用户的采样文件会保留到下一次清理。
+后台服务日志属于 root 用户，查看时需要管理员权限，例如查看当天最后 50 行：
+
+```bash
+sudo tail -n 50 "/var/root/Library/Logs/MacFanPro/macfanpro-$(date +%F).log"
+```
+
+临时采样达到容量上限时停止并保留已有数据。正常结束、Ctrl-C 或 SIGTERM 后更新到期时间；异常退出也会留下可清理标记。应用启动、运行期间每小时及下一次采样启动时，会清理已到期且不再写入的采样目录。应用未运行时，用户的采样文件会保留到下一次清理。旧版本留下的、没有到期标记的采样目录无法与手动导出区分，因此不会自动删除，不需要时可以手动删除。
 
 **采样的 100 MiB 限制针对每次记录，不是整个采样目录的总容量。** 使用 `--output <目录>` 或 `--no-expire` 的采样会永久保留且没有该容量限制，需自行管理。未标记到期时间的旧采样和其他文件不会自动删除。
 

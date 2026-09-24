@@ -1083,7 +1083,7 @@ struct Uninstall: ParsableCommand {
         abstract: "Remove the background daemon"
     )
 
-    @Flag(name: .long, help: "Also delete this user's MacFanPro profiles, calibration and logs")
+    @Flag(name: .long, help: "Also delete this user's MacFanPro profiles, calibration and logs, and the daemon's logs")
     var purgeData = false
 
     func run() throws {
@@ -1125,9 +1125,14 @@ struct Uninstall: ParsableCommand {
         // Remove user data
         let appSupport = home.appendingPathComponent("Library/Application Support/MacFanPro")
         let logs = home.appendingPathComponent("Library/Logs/MacFanPro")
+        // The daemon logged as root; it has been stopped above, so its directory is idle.
+        let daemonLogs = TFLogger.logDirectory(forUID: 0)
         if purgeData {
             if fm.fileExists(atPath: appSupport.path) { try fm.removeItem(at: appSupport) }
             if fm.fileExists(atPath: logs.path) { try fm.removeItem(at: logs) }
+            if let daemonLogs, daemonLogs != logs, fm.fileExists(atPath: daemonLogs.path) {
+                try fm.removeItem(at: daemonLogs)
+            }
         }
 
         // Remove app bundle
@@ -1135,7 +1140,8 @@ struct Uninstall: ParsableCommand {
 
         print("MacFanPro fully uninstalled.")
         print("Removed: daemon, binary and app.")
-        print(purgeData ? "Removed user profiles, calibration and logs." : "User profiles, calibration and logs were preserved.")
+        print(purgeData ? "Removed user profiles, calibration and logs, and the daemon's logs."
+                        : "User profiles, calibration and logs, and the daemon's logs, were preserved.")
         print("If installed with Homebrew, finish with: brew uninstall macfanpro")
     }
 }

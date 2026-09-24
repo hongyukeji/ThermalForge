@@ -168,6 +168,13 @@ struct LoggingTests {
         #expect(logger.snapshot.failures == 0)
     }
 
+    @Test("Log directories resolve per account, so uninstall can find the daemon's")
+    func logDirectoryPerAccount() {
+        #expect(TFLogger.logDirectory(forUID: 0)?.path == "/var/root/Library/Logs/MacFanPro")
+        #expect(TFLogger.logDirectory(forUID: getuid())
+            == FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/Logs/MacFanPro"))
+    }
+
     @Test("Huge messages are bounded without producing invalid UTF-8")
     func boundedMessage() throws {
         let root = try temporaryDirectory(); defer { try? FileManager.default.removeItem(at: root) }

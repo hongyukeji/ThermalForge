@@ -63,6 +63,13 @@ public final class TFLogger {
         set { gate.lock(); days = max(1, newValue); gate.unlock() }
     }
     public var directory: URL { store.directory }
+
+    /// The runtime log directory of an account. The daemon runs as root, so its log lives
+    /// under root's home rather than the user's; uninstall uses this to find both.
+    public static func logDirectory(forUID uid: uid_t) -> URL? {
+        guard let account = getpwuid(uid), let home = account.pointee.pw_dir else { return nil }
+        return URL(fileURLWithPath: String(cString: home)).appendingPathComponent("Library/Logs/MacFanPro")
+    }
     public var path: URL { directory.appendingPathComponent(RuntimeLogStore.name(for: now())) }
 
     public func fan(_ message: String) { write("FAN", message) }
