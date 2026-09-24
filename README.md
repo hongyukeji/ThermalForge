@@ -8,7 +8,7 @@
 
 MacFanPro 基于 [ThermalForge](https://github.com/ProducerGuy/ThermalForge) 独立维护，使用自己的版本、安装名称和更新渠道，并非上游官方发行版。
 
-[安装](#安装) · [使用](#使用) · [更新](#更新) · [卸载](#卸载) · [日志与数据](#日志与数据) · [常见问题](#常见问题) · [开发与贡献](#开发与贡献) · [贡献者](#贡献者)
+[安装](#安装) · [使用](#使用) · [更新](#更新) · [卸载](#卸载) · [日志与数据](#日志与数据) · [常见问题](#常见问题) · [开发与贡献](#开发与贡献) · [参与贡献](#参与贡献)
 
 ## 功能与界面
 
@@ -287,20 +287,19 @@ bash Scripts/package-release.sh
 
 版本号采用 **上游版本号 + 第四段修订号**，由 [`Version.swift`](Sources/MacFanProCore/Version.swift) 定义。例如 `0.2.3.15` 基于上游 `0.2.3`；只有实际合入新的上游版本后才更新前三段。应用和 CLI 按各段数字比较版本，缺省段视为 0，不为特定旧版添加比较例外。
 
-## 贡献者
+## 参与贡献
 
-感谢每一位为 MacFanPro 做出贡献的人：
+欢迎任何形式的贡献：
 
-<table>
-  <tr>
-    <td align="center" valign="top" width="120">
-      <a href="https://github.com/hongyukeji"><img src="https://github.com/hongyukeji.png?size=200" width="80" alt="hongyukeji"><br><b>hongyukeji</b></a><br>
-      <sub>维护者</sub>
-    </td>
-  </tr>
-</table>
+- **问题反馈**：在 [Issues](https://github.com/macfanpro/macfanpro/issues) 报告问题或提交兼容性报告，请附上机型、macOS 版本、MacFanPro 版本和 `macfanpro status` 输出。
+- **代码**：按 [开发与贡献](#开发与贡献) 中的步骤构建和验证，再通过 [Pull Request](https://github.com/macfanpro/macfanpro/pulls) 提交。
+- **翻译**：改进英文或简体中文界面文案，繁体中文由脚本生成，流程见 [GUI 本地化](docs/gui-localization.md)。
 
-完整名单见 [Contributors](https://github.com/macfanpro/macfanpro/graphs/contributors)。欢迎通过 [Issues](https://github.com/macfanpro/macfanpro/issues) 反馈问题或提交兼容性报告。
+### 贡献者
+
+<a href="https://github.com/macfanpro/macfanpro/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=macfanpro/macfanpro" alt="MacFanPro 贡献者">
+</a>
 
 ## 来源与许可
 
