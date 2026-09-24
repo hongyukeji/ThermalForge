@@ -30,4 +30,13 @@
 
 ## 验证边界
 
-未公开发行，未经过 CI、Homebrew 与下载产物验证。只在 M4 Max 上实测；M4 核心键表来自 Stats，未在 M4 / M4 Pro 实机核对。其他芯片的 CPU 行逻辑仍为前缀分组，未验证。未测试睡眠唤醒与重新登录。Homebrew 安装的 `macfanpro`（`/opt/homebrew/bin`）仍为 0.2.3.15，本机 CLI 以 `/usr/local/bin/macfanpro` 为准。
+只在 M4 Max 上实测；M4 核心键表来自 Stats，未在 M4 / M4 Pro 实机核对。其他芯片的 CPU 行逻辑仍为前缀分组，未验证。未测试睡眠唤醒与重新登录。
+
+## 公开发行
+
+- 发行源提交：`45cac23cbd98247fb4f3a0496c0a50e7b16ad7a9`，标签 `v0.2.3.16`。
+- [源码 CI](https://github.com/macfanpro/macfanpro/actions/runs/35948514975)、[发行 CI](https://github.com/macfanpro/macfanpro/actions/runs/35948515100)、[Homebrew CI](https://github.com/macfanpro/homebrew-tap/actions/runs/35948847655) 均通过。
+- 下载草稿附件，`SHA256SUMS` 校验通过，与 GitHub asset digest 一致：`MacFanPro-0.2.3.16-macos-arm64.tar.gz` 为 `206536a3ed37b3b730fdb7a96269473104bd20b627258e46e46fa20ce5d8800f`。CLI 与应用版本为 0.2.3.16，严格代码签名校验通过。
+- 以先退出应用、同步后台、再打开的步骤安装下载产物；已安装的 CLI 与应用二进制与发行包逐字节一致。通过 CLI/daemon 将两只风扇设为 2000 RPM，实测到位后恢复 Apple 自动控制，重新打开应用；当日日志 0 条 ERROR。
+- 本机 Homebrew 7.0.6 拒绝加载未受信任 tap 的配方，需先执行 `brew trust macfanpro/tap`；README 与 tap 说明已补充这一步。
+
