@@ -64,3 +64,9 @@ Detailed logs, screenshots, hashes, preferences, the previous 0.2.3.5 app/CLI an
 ## Official contribution
 
 [ProducerGuy/ThermalForge PR #54](https://github.com/ProducerGuy/ThermalForge/pull/54) is open and unmerged, with head `246d1bd5f3d0cdd6613217719541d9ae9a8a8593` at the latest API check. Its six implementation/test files contain only the original M4 repair. The isolated upstream checkout passed a release build and 56 tests, excluding the original test that writes user configuration. Localization and this fork's separate audit changes are not silently bundled into that submission. Submission does not mean upstream acceptance.
+
+## Combined verification of the upstream PRs (branch retired 2026-09-24)
+
+The branch `codex/upstream-contribution-integration` merged the five contribution branches onto upstream `8a344f6` to confirm they work together. Each implementation commit lives on its own PR branch (#54 `m4-fan-handoff-transport`, #55 `isolate-profile-tests`, #56 `verify-auto-release`, #57 `gui-languages`, #58 `native-menu-spacing`); the integration branch held only the merge commits and was deleted. Its tip was `06bca4a76d7e`.
+
+**#57 and #58 conflict with each other.** Each is mergeable on its own, but both edit `Sources/ThermalForgeApp/MenuBarView.swift`, so whichever lands second conflicts. Resolution: keep both sides — the localized strings from #57 (`language.text("FANS")`, `language.text("Fan {index}", …)`, the language `Picker`) together with the `.padding(.top, 4)` spacing from #58. When upstream merges one, rebase the other PR's branch and resolve that way.
