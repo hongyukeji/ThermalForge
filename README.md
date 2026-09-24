@@ -294,8 +294,7 @@ bash Scripts/package-release.sh
 <table>
   <tr>
     <td align="center" valign="top" width="120">
-      <a href="https://github.com/hongyukeji"><img src="https://github.com/hongyukeji.png?size=200" width="80" alt="hongyukeji"></a><br>
-      <b>hongyukeji</b><br>
+      <a href="https://github.com/hongyukeji"><img src="https://github.com/hongyukeji.png?size=200" width="80" alt="hongyukeji"><br><b>hongyukeji</b></a><br>
       <sub>维护者</sub>
     </td>
   </tr>
