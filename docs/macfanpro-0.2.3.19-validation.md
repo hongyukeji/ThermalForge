@@ -13,3 +13,10 @@
 - 离屏渲染 5 种状态（英文界面选 English、跟随系统，中文界面选跟随系统、简体中文，繁体界面选繁體中文），按 260 pt 实际窗口宽度排版：英文界面下拉框约 134 pt，中文与繁体约 98 pt，同一界面语言下切换选项宽度不变，右缘与版本号对齐。
 - 曾尝试用自定义布局或 `frame(minWidth:)` 再设一个最小宽度：系统下拉框在隐藏标签后宽度固定为最长选项，外加的宽度只会让它偏离右侧对齐，因此不采用。
 - Debug、Release 各 116 项测试通过；各配置 108 次断连检查通过；语言资源打包检查通过。
+
+## 公开发行
+
+- 发行源提交：`cab2c77`，标签 `v0.2.3.19`。[源码 CI](https://github.com/macfanpro/macfanpro/actions/runs/35977197100)、[发行 CI](https://github.com/macfanpro/macfanpro/actions/runs/35977196614) 通过。
+- 下载草稿附件，`SHA256SUMS` 校验通过，与 GitHub asset digest 一致：`MacFanPro-0.2.3.19-macos-arm64.tar.gz` 为 `25df4e820bae0343b77d494b27cdb086783255d668ce5a355aba1b74fb4f5f69`。版本为 0.2.3.19，严格代码签名校验通过。
+- 以先退出应用、同步后台、再打开的步骤安装下载产物；已安装的后台服务 CLI 与应用二进制与发行包逐字节一致。
+
