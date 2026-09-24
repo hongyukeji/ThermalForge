@@ -1,5 +1,11 @@
 # MacFanPro changelog
 
+## 0.2.3.17
+
+- Write runtime log lines without rescanning the log directory. Each line previously listed the directory twice and cost 0.7–1.1 ms in the background, growing with the number of log files; it now costs about 57 µs regardless of file count. The background service writes up to ~22 lines per second while fans ramp. Size and retention limits are unchanged.
+- `sudo macfanpro uninstall --purge-data` also removes the background service's logs in `/var/root/Library/Logs/MacFanPro/`, which were previously left behind. Plain `uninstall` still keeps logs.
+- README: how to read the background service log, when runtime logs are pruned, and why unmarked captures from earlier versions are kept.
+
 ## 0.2.3.16
 
 - Show the hottest CPU core in the CPU row. On M4 the row also picked up SoC hotspot keys (`TCDX`, `TCMb`) and per-core keys that are not the core temperature (`Tp02`, `Tp06`, `Tp0A`), so under GPU load it read 73–75°C while every CPU core read 60–63°C. It now uses the per-core keys Stats maps for the M4 generation; under GPU load MacFanPro and Stats now agree within 0.5°C. Other chips keep the previous grouping.
