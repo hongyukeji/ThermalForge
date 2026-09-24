@@ -1,5 +1,9 @@
 # MacFanPro changelog
 
+## 0.2.3.19
+
+- Size the language pop-up to its choices instead of stretching it across the row. It takes the native pop-up width (its longest choice), stays the same width when the selection changes, and lines up with the version value below.
+
 ## 0.2.3.18
 
 - Group the language picker and a new Version row in their own section, between two dividers, directly above Quit. The version shown is the one the app was built as. The °F/°C and Launch at Login toggles stay where upstream has them.
