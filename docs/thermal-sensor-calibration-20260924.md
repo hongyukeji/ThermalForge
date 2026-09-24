@@ -152,3 +152,18 @@ grouping elsewhere). The menu bar headline is the hotter of the two rows.
 `status()` and `safetyPeakTemp` still include every key, so the fan curve and
 the safety floor keep following the hottest point on the die.
 
+
+## Other rows (checked after release)
+
+Against Stats' M4 map, on this Mac16,5 at idle:
+
+| Row | MacFanPro key | Reading | Cross-check |
+|---|---|---|---|
+| SSD | `TH0x` | 32.2 | Stats "NAND" is `TH0x`; identical readings. Rises 13°C under disk I/O. |
+| RAM | `TRDX` (max of `TRD0`…`TRDf`), `TMVR` | 43.8 / 36.3 | Not cross-checked: Stats maps M4 memory to `Tm0p`/`Tm1p`/`Tm2p`, which this machine does not publish, so Stats shows no memory temperature here. The 16 `TRD*` sensors match the M4 Max's 16 memory channels and read plausibly, so the row is unchanged. |
+| Ambient | `TAOL` | 28.5 | Not in Stats' map; stays 25–29°C across every load. `Ta01`…`Ta0S` hold a constant 8.6 placeholder and are not matched (lowercase `Ta`). |
+
+The CPU row can show exactly 40.0 when every gated performance core holds the
+40.0 placeholder and the efficiency cores are cooler; Stats shows the same
+value. Sensors quantise to fractions of a degree, so a real 40.0 is possible
+and the placeholder cannot be filtered without discarding real readings.
