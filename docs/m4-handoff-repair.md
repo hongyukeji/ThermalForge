@@ -72,8 +72,8 @@ The daemon did not restart during these runs. Application logs contained no new 
 The upstream Homebrew formula does not include this fork's changes. To build/install this fork using the existing installer:
 
 ```sh
-git clone https://github.com/hongyukeji/ThermalForge.git
-cd ThermalForge
+git clone https://github.com/macfanpro/macfanpro.git
+cd macfanpro
 ./setup.sh
 ```
 
