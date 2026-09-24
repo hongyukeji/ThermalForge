@@ -182,14 +182,24 @@ struct MenuBarView: View {
 
             // MacFanPro-only section (not in upstream): language and the running version.
             // Language changes update presentation only; AppState stays alive.
-            Picker(language.text("Language"), selection: Binding(
-                get: { language.selection }, set: { language.select($0) }
-            )) {
-                ForEach(AppLanguage.allCases) { choice in
-                    Text(language.title(for: choice)).tag(choice)
+            HStack {
+                Text(language.text("Language"))
+                    .accessibilityHidden(true) // The picker carries the same label.
+                Spacer(minLength: 8)
+                // A pop-up's natural width is its longest choice, so it stays steady when
+                // the selection changes; fixedSize keeps it from spanning the row.
+                Picker(language.text("Language"), selection: Binding(
+                    get: { language.selection }, set: { language.select($0) }
+                )) {
+                    ForEach(AppLanguage.allCases) { choice in
+                        Text(language.title(for: choice)).tag(choice)
+                    }
                 }
+                .pickerStyle(.menu)
+                .labelsHidden()
+                .fixedSize()
+                .accessibilityIdentifier("io.github.macfanpro.language")
             }
-            .accessibilityIdentifier("io.github.macfanpro.language")
             .padding(.horizontal, 12)
             .padding(.bottom, 6)
             HStack {
